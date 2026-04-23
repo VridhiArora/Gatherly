@@ -320,7 +320,7 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="section" id="testimonials" style={{ background: "#0f172a" }}>
+      <section className="section" id="testimonials" style={{ background: "#2a0f0fff" }}>
         <h2 style={{ color: "white" }}>What Students Say</h2>
         <div className="review-grid">
           {reviews.map((rev, i) => (

@@ -47,6 +47,7 @@ app.post("/api/signup", async (req, res) => {
     const user = await User.create({ username, rollno, password, session })
     return res.status(201).json({ message: "Account created!", userId: user._id })
   } catch (err) {
+    console.error("Signup Error:", err)
     return res.status(500).json({ error: "Server error." })
   }
 })
@@ -66,6 +67,7 @@ app.post("/api/login", async (req, res) => {
       session:  user.session
     })
   } catch (err) {
+    console.error("Login Error:", err)
     return res.status(500).json({ error: "Server error." })
   }
 })
