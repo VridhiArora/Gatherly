@@ -1,0 +1,183 @@
+
+.main{
+height:100vh;
+width:100vw;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+padding-right:170px;
+background:url("/chitkara2.png") no-repeat center center/cover;
+}
+body{
+margin:0;
+font-family:"Segoe UI", Arial;
+}
+
+/* LOGIN CARD */
+
+.container{
+width:320px;
+background:white; /* white background */
+padding:15px;
+border-radius:3px;
+box-shadow:0 4px 15px rgba(0,0,0,0.35);
+}
+
+/* HEADER */
+
+.header{
+text-align:center;
+margin-bottom:10px;
+}
+
+.header img{
+width:80px; /* smaller logo */
+}
+
+/* UNIVERSITY TEXT */
+
+.uni{
+font-size:14px; /* bigger */
+font-weight:bold; /* bold */
+margin-top:6px;
+color:#333;
+line-height:1.3;
+}
+
+/* LABEL */
+
+label{
+font-size:13px;
+margin-top:10px;
+display:block;
+color:#222;
+font-weight:500;
+}
+
+/* INPUT */
+
+input,select{
+width:100%;
+padding:6px;
+margin-top:5px;
+border:1px solid #7fa3d8;
+background:#dce6f4;
+font-size:13px;
+box-sizing:border-box;
+color:black;
+}
+
+/* CHECKBOX */
+
+.remember{
+font-size:12px;
+margin-top:8px;
+display:flex;
+align-items:center;
+gap:5px;
+color:#000;
+}
+.remember input{
+width:auto;
+margin-right:5px;
+}
+/* BUTTON */
+
+button{
+width:100%;
+margin-top:12px;
+padding:8px;
+background:#c8352e;
+color:white;
+border:none;
+font-size:14px;
+cursor:pointer;
+}
+
+button:hover{
+background:#a72a24;
+}
+
+/* LINKS */
+
+.links{
+margin-top:6px;
+font-size:12px;
+}
+
+.links a{
+color:#1a73e8;
+text-decoration:none;
+cursor:pointer;
+}
+
+/* SWITCH */
+
+.switch{
+margin-top:6px;
+font-size:12px;
+text-align:center;
+}
+
+.switch a{
+color:#1a73e8;
+cursor:pointer;
+}
+
+/* APP ICONS */
+
+.apps{
+text-align:center;
+margin:10px 0;
+}
+
+.apps img{
+width:30px;
+margin:0 6px;
+}
+
+/* FOOTER */
+
+.footer{
+text-align:center;
+font-size:12px;
+}
+
+.power {
+width:90px;
+margin-top:5px;
+}
+
+.remember{
+font-size:12px;
+margin-top:8px;
+color:#000;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+.links{
+margin-top:6px;
+font-size:12px;
+color:#000;
+}
+
+.links a{
+color:#1a73e8;
+text-decoration:none;
+cursor:pointer;
+}
+
+.switch{
+margin-top:6px;
+font-size:12px;
+text-align:center;
+color:#000;
+}
+
+.footer{
+text-align:center;
+font-size:12px;
+color:#000;
+}

@@ -1,0 +1,188 @@
+/* ================= GLOBAL WRAP ================= */
+.cu-wrap { background: #0f172a; color: #f1f5f9; overflow-x: hidden; min-height: 100vh; font-family: 'Montserrat', sans-serif; }
+
+/* ================= NAVBAR ================= */
+.cu-header {
+  position: fixed; width: 100%; padding: 18px 80px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(15,23,42,0.92); backdrop-filter: blur(10px); z-index: 1000;
+}
+.cu-logo-section { display: flex; align-items: center; gap: 12px; }
+.cu-logo-section img { width: 42px; }
+.cu-uni-name { display: flex; flex-direction: column; line-height: 1; }
+.cu-main-name { color: white; font-weight: 700; letter-spacing: 1px; }
+.cu-sub-name { color: white; font-size: 12px; letter-spacing: 2px; }
+.cu-header nav a { color: white; margin-left: 28px; text-decoration: none; font-weight: 500; transition: 0.3s; }
+.cu-header nav a:hover { color: #cffafe; }
+
+/* ================= HERO ================= */
+.cu-hero {
+  height: 88vh; position: relative;
+  overflow: hidden; display: flex; align-items: center;
+}
+.cu-hero-slider { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+.cu-slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease; }
+.cu-slide.active { opacity: 1; }
+.cu-hero::after {
+  content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to right, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.55) 45%, rgba(15,23,42,0.15) 100%);
+  z-index: 1;
+}
+.cu-hero-content { position: relative; z-index: 2; max-width: 620px; margin-left: 8%; color: white; }
+.cu-hero-tag {
+  display: inline-block;
+  border: 1px solid rgba(34,211,238,0.5);
+  color: #cffafe; font-size: 11px; font-weight: 700;
+  padding: 6px 16px; border-radius: 20px;
+  letter-spacing: 2px; margin-bottom: 22px; text-transform: uppercase;
+  background: rgba(6,182,212,0.12); backdrop-filter: blur(4px);
+}
+.cu-hero-content h1 { font-size: 56px; font-weight: 800; line-height: 1.15; }
+.cu-hero-content h1 span {
+  background: linear-gradient(90deg,#cffafe,#cffafe);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.cu-hero-content p { margin-top: 18px; font-size: 17px; line-height: 1.8; color: rgba(255,255,255,0.8); max-width: 500px; }
+.cu-hero-content button {
+  margin-top: 30px; padding: 13px 30px;
+  background: rgba(6,182,212,0.85);
+  border: 1px solid rgba(34,211,238,0.4);
+  border-radius: 8px; color: white;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  transition: 0.3s; font-family: 'Montserrat', sans-serif;
+  backdrop-filter: blur(4px);
+  display: inline-block; width: fit-content;
+}
+.cu-hero-content button:hover {
+  background: rgba(6,182,212,1); transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(6,182,212,0.35);
+}
+.cu-hero-dots {
+  position: absolute; bottom: 30px; left: 50%;
+  transform: translateX(-50%); display: flex; gap: 10px; z-index: 3;
+}
+.cu-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.35); cursor: pointer; transition: 0.3s; }
+.cu-dot.active { background: #06b6d4; transform: scale(1.4); }
+
+/* ================= SECTION BASE ================= */
+.cu-section { padding: 80px 100px; }
+.cu-section-title { text-align: center; margin-bottom: 50px; }
+.cu-section-title h2 { font-size: 32px; font-weight: 800; color: white; }
+.cu-section-title h2 span {
+  background: linear-gradient(90deg,#06b6d4,#cffafe);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.cu-section-title p { color: #64748b; font-size: 14px; margin-top: 10px; }
+.cu-divider { width: 60px; height: 4px; background: linear-gradient(90deg,#06b6d4,#22d3ee); border-radius: 4px; margin: 14px auto 0; }
+
+/* ================= EVENTS SLIDER ================= */
+.cu-events-slider { overflow: hidden; width: 100%; }
+.cu-events-track {
+  display: flex; gap: 24px;
+  animation: cuSlideEvents 30s linear infinite; width: max-content;
+}
+.cu-events-track:hover { animation-play-state: paused; }
+.cu-event-card {
+  width: 300px; background: #1e293b; border-radius: 16px;
+  overflow: hidden; flex-shrink: 0; transition: 0.3s;
+  border: 1px solid rgba(6,182,212,0.1);
+}
+.cu-event-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.3); }
+.cu-event-img-wrap {
+  width: 100%; height: 210px; background: #080d18;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.cu-event-img-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.cu-event-info { padding: 18px; }
+.cu-event-date {
+  display: inline-block;
+  background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3);
+  color: #cffafe; font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+}
+.cu-event-info h3 { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; }
+.cu-event-info p { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 14px; }
+.cu-reg-btn {
+  padding: 8px 16px; border: none; border-radius: 8px;
+  background: linear-gradient(135deg,#06b6d4,#06b6d4);
+  color: white; font-weight: 700; font-size: 12px;
+  cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif;
+  display: inline-block; width: fit-content;
+}
+.cu-reg-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(6,182,212,0.35); background: linear-gradient(135deg,#06b6d4,#22d3ee); }
+.cu-event-card.past-event { filter: grayscale(80%); opacity: 0.55; }
+.cu-event-card.past-event .cu-reg-btn { background: #334155; cursor: not-allowed; }
+@keyframes cuSlideEvents { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ================= OSA SECTION ================= */
+.cu-osa-section {
+  padding: 80px 100px; text-align: center; background: #080d18;
+  border-top: 1px solid rgba(6,182,212,0.12);
+  border-bottom: 1px solid rgba(6,182,212,0.12);
+  position: relative; overflow: hidden;
+}
+.cu-osa-section::before {
+  content: ""; position: absolute; top: -80px; right: -80px;
+  width: 350px; height: 350px; border-radius: 50%;
+  background: radial-gradient(circle,rgba(6,182,212,0.07),transparent 70%);
+}
+.cu-osa-section::after {
+  content: ""; position: absolute; bottom: -80px; left: -80px;
+  width: 350px; height: 350px; border-radius: 50%;
+  background: radial-gradient(circle,rgba(6,182,212,0.07),transparent 70%);
+}
+.cu-osa-section h2 { font-size: 30px; font-weight: 800; color: white; margin-bottom: 18px; position: relative; z-index: 1; }
+.cu-osa-section h2 span {
+  background: linear-gradient(90deg,#06b6d4,#cffafe);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.cu-osa-section p { max-width: 780px; margin: auto; line-height: 1.9; font-size: 15px; color: #94a3b8; position: relative; z-index: 1; }
+
+/* ================= CLUBS ================= */
+.cu-clubs-section { padding: 80px 100px; }
+.cu-club-card {
+  display: flex; gap: 50px; align-items: center;
+  background: #1e293b; border-radius: 18px; padding: 36px 40px;
+  margin-bottom: 22px; border: 1px solid rgba(6,182,212,0.08);
+  transition: 0.35s ease; position: relative; overflow: hidden;
+}
+.cu-club-card::before {
+  content: ""; position: absolute; left: 0; top: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(180deg,#06b6d4,#22d3ee);
+}
+.cu-club-card:hover { transform: translateX(4px); box-shadow: 0 12px 35px rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.22); }
+.cu-club-text { flex: 1; }
+.cu-club-text h3 { font-size: 19px; font-weight: 800; margin-bottom: 10px; color: white; }
+.cu-club-text p { font-size: 14px; color: #94a3b8; line-height: 1.8; }
+.cu-club-images { flex: 1; display: flex; gap: 12px; }
+.cu-big-img {
+  width: 65%; height: 190px; border-radius: 12px; overflow: hidden;
+  background: #0f172a; border: 1px solid rgba(6,182,212,0.15);
+}
+.cu-big-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cu-small-imgs { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.cu-small-img {
+  flex: 1; border-radius: 8px; overflow: hidden;
+  background: #0f172a; border: 1px solid rgba(6,182,212,0.1);
+}
+.cu-small-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ================= GALLERY ================= */
+.cu-gallery-section { padding: 80px 100px; background: #080d18; }
+.cu-gallery-slider { overflow: hidden; width: 100%; }
+.cu-gallery-track {
+  display: flex; gap: 14px;
+  animation: cuScrollGallery 24s linear infinite; width: max-content;
+}
+.cu-gallery-track:hover { animation-play-state: paused; }
+.cu-gallery-track img {
+  width: 250px; height: 170px; object-fit: cover;
+  border-radius: 12px; flex-shrink: 0; transition: 0.3s;
+  border: 1px solid rgba(6,182,212,0.08);
+}
+.cu-gallery-track img:hover { transform: scale(1.05); border-color: rgba(6,182,212,0.35); box-shadow: 0 8px 25px rgba(6,182,212,0.15); }
+@keyframes cuScrollGallery { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ================= FOOTER ================= */
+.cu-footer { background: #020617; text-align: center; padding: 25px; font-size: 14px; color: rgba(255,255,255,0.4); }

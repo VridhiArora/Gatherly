@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Montserrat',sans-serif; }
+
+body, #root{ background:#0f172a; width:100%; overflow-x:hidden; }
+
+.aboutus-wrap{
+    width:100%;
+    min-height:100vh;
+    background:#0f172a;
+    color:#f1f5f9;
+    overflow-x:hidden;
+}
+
+/* ================= NAVBAR ================= */
+.aboutus-wrap header{
+    position:fixed; width:100%; padding:18px 80px;
+    display:flex; justify-content:space-between; align-items:center;
+    background:rgba(15,23,42,0.95); backdrop-filter:blur(10px); z-index:1000;
+}
+.aboutus-wrap .logo-section{ display:flex; align-items:center; gap:12px; }
+.aboutus-wrap .logo-section img{ width:42px; }
+.aboutus-wrap .uni-name{ display:flex; flex-direction:column; line-height:1; }
+.aboutus-wrap .main-name{ color:white; font-weight:700; letter-spacing:1px; }
+.aboutus-wrap .sub-name{ color:white; font-size:12px; letter-spacing:2px; }
+.aboutus-wrap nav a{ color:white; margin-left:28px; text-decoration:none; font-weight:500; transition:0.3s; }
+.aboutus-wrap nav a:hover{ color:#818cf8; }
+
+/* ================= HERO ================= */
+.aboutus-hero{
+    min-height:60vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:140px 100px 80px;
+    background:linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    position:relative;
+    overflow:hidden;
+}
+
+.aboutus-hero::before{
+    content:"";
+    position:absolute;
+    width:600px; height:600px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%);
+    top:-100px; right:-100px;
+}
+
+.aboutus-hero::after{
+    content:"";
+    position:absolute;
+    width:400px; height:400px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(139,92,246,0.1), transparent 70%);
+    bottom:-50px; left:-50px;
+}
+
+.aboutus-hero-content{
+    position:relative; z-index:1;
+}
+
+.aboutus-hero-content h3{
+    font-weight:400; font-size:16px;
+    margin-bottom:12px; opacity:0.8; letter-spacing:1px; color:white;
+}
+
+.aboutus-hero-content h1{
+    font-size:62px; font-weight:800; line-height:1.1; color:white;
+}
+
+.aboutus-hero-content h1 span{
+    background:linear-gradient(90deg, #6366f1, #a78bfa, #818cf8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.aboutus-hero-content p{
+    margin-top:16px; font-size:18px;
+    opacity:0.8; max-width:560px; color:white;
+}
+
+.about-hero-divider{
+    width:80px; height:4px;
+    background:linear-gradient(90deg, #6366f1, #a78bfa);
+    border-radius:4px;
+    margin:22px auto 0;
+}
+
+/* ================= SECTIONS ================= */
+.aboutus-section{
+    padding:80px 100px;
+}
+
+.aboutus-section h2{
+    font-size:30px; font-weight:800;
+    text-align:center; margin-bottom:50px;
+    color:white;
+}
+
+.aboutus-section h2 span{
+    background:linear-gradient(90deg, #6366f1, #a78bfa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.alt-bg{ background:#080d18; }
+
+/* ================= WHAT IS GATHERLY ================= */
+.what-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:center;
+    max-width:1100px;
+    margin:auto;
+}
+
+.what-text p{
+    font-size:16px; line-height:1.9;
+    color:#94a3b8; margin-bottom:18px;
+}
+
+.what-visual{
+    background:linear-gradient(135deg, #1e1b4b, #312e81);
+    border-radius:20px;
+    padding:50px 40px;
+    text-align:center;
+    border:1px solid rgba(99,102,241,0.3);
+    box-shadow:0 0 60px rgba(99,102,241,0.15);
+}
+
+.what-visual .big-g{
+    font-size:110px; font-weight:800; line-height:1;
+    background:linear-gradient(135deg, #6366f1, #a78bfa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.what-visual p{
+    color:rgba(255,255,255,0.5);
+    font-size:14px; margin-top:12px;
+}
+
+/* ================= FEATURES ================= */
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:24px;
+    max-width:1100px;
+    margin:auto;
+}
+
+.feature-card{
+    background:#1e293b;
+    padding:32px 28px;
+    border-radius:18px;
+    border:1px solid rgba(99,102,241,0.15);
+    position:relative;
+    overflow:hidden;
+    transition:0.35s ease;
+}
+
+.feature-card::before{
+    content:"";
+    position:absolute; top:0; left:0;
+    width:100%; height:3px;
+    background:linear-gradient(90deg, #6366f1, #a78bfa);
+}
+
+.feature-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px rgba(99,102,241,0.2);
+    border-color:rgba(99,102,241,0.4);
+}
+
+.feature-icon{ font-size:36px; margin-bottom:16px; }
+.feature-card h3{ font-size:17px; font-weight:700; margin-bottom:10px; color:#c4b5fd; }
+.feature-card p{ font-size:14px; color:#94a3b8; line-height:1.7; }
+
+/* ================= HOW IT WORKS ================= */
+.workflow{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:16px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.step-card{
+    background:#1e293b;
+    padding:28px 20px;
+    border-radius:16px;
+    text-align:center;
+    border:1px solid rgba(99,102,241,0.1);
+    transition:0.3s;
+}
+
+.step-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 35px rgba(99,102,241,0.2);
+    border-color:rgba(99,102,241,0.35);
+}
+
+.step-num{
+    width:48px; height:48px;
+    border-radius:50%;
+    background:linear-gradient(135deg, #6366f1, #a78bfa);
+    color:white;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:800;
+    margin:0 auto 16px;
+    box-shadow:0 0 20px rgba(99,102,241,0.4);
+}
+
+.step-card h4{ font-size:14px; font-weight:700; margin-bottom:8px; color:#a5b4fc; }
+.step-card p{ font-size:13px; color:#64748b; line-height:1.6; }
+
+/* ================= STATS ================= */
+.stats-strip{
+    background:linear-gradient(135deg, #1e1b4b, #312e81);
+    padding:60px 100px;
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    gap:40px;
+    border-top:1px solid rgba(99,102,241,0.2);
+    border-bottom:1px solid rgba(99,102,241,0.2);
+}
+
+.stat-item{ text-align:center; }
+.stat-item h2{
+    font-size:48px; font-weight:800;
+    background:linear-gradient(90deg, #6366f1, #a78bfa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.stat-item p{ font-size:15px; color:rgba(255,255,255,0.6); margin-top:6px; }
+
+/* ================= MISSION ================= */
+.mission-box{
+    max-width:820px;
+    margin:auto;
+    background:linear-gradient(135deg, #1e1b4b, #312e81);
+    border-radius:24px;
+    padding:60px;
+    text-align:center;
+    border:1px solid rgba(99,102,241,0.3);
+    box-shadow:0 0 80px rgba(99,102,241,0.15);
+}
+
+.mission-box h3{
+    font-size:24px; font-weight:800; line-height:1.5;
+    margin-bottom:24px;
+    background:linear-gradient(90deg, #6366f1, #a78bfa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.mission-box p{
+    font-size:16px; line-height:1.9; color:#94a3b8;
+}
+
+/* ================= TEAM ================= */
+.team-grid{
+    display:grid;
+  grid-template-columns:repeat(4,1fr);
+    gap:28px;
+    max-width:900px;
+    margin:auto;
+}
+
+.about-team-card{
+    background:#1e293b;
+    padding:32px 24px;
+    border-radius:18px;
+    text-align:center;
+    border:1px solid rgba(99,102,241,0.15);
+    transition:0.3s;
+}
+
+.about-team-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 18px 40px rgba(99,102,241,0.2);
+    border-color:rgba(99,102,241,0.4);
+}
+
+.about-team-card img{
+    width:90px; height:90px;
+    border-radius:50%; object-fit:cover;
+    border:3px solid #6366f1;
+    margin-bottom:14px;
+    box-shadow:0 0 20px rgba(99,102,241,0.3);
+}
+
+.about-team-card h4{ font-size:16px; font-weight:700; color:white; margin-bottom:4px; }
+.about-team-card .role{ font-size:13px; color:#818cf8; margin-bottom:4px; }
+.about-team-card .branch{ font-size:12px; color:#64748b; }
+
+/* ================= FOOTER ================= */
+.aboutus-wrap footer{
+    background:#020617;
+    color:rgba(255,255,255,0.6);
+    text-align:center;
+    padding:28px;
+    font-size:14px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+    .aboutus-section{ padding:60px 25px; }
+    .aboutus-hero{ padding:120px 25px 60px; }
+    .aboutus-hero-content h1{ font-size:36px; }
+    .what-grid{ grid-template-columns:1fr; gap:30px; }
+    .stats-strip{ padding:40px 25px; }
+    .mission-box{ padding:40px 24px; }
+    .workflow{ grid-template-columns:repeat(3,1fr); }
+}
