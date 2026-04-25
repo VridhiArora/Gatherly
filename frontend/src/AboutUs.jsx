@@ -20,10 +20,10 @@ const steps = [
 ];
 
 const team = [
-  { img: "/female.png",   name: "Vridhi Arora", branch: "B.Tech CSE" },
-  { img: "/male.png", name: "Vikas Kumar",     branch: "B.Tech CSE" },
-  { img: "/female.png",   name: "Vanshika Chauhan" ,  branch: "B.Tech CSE" },
-  { img: "/male.png", name: "Vishrut Kathwal",     branch: "B.Tech CSE" },
+  { img: "/female.png",   name: "Vridhi Arora", branch: "B.E. CSE" },
+  { img: "/male.png", name: "Vikas Kumar",     branch: "B.E. CSE" },
+  { img: "/female.png",   name: "Vanshika Chauhan" ,  branch: "B.E. CSE" },
+  { img: "/male.png", name: "Vishrut Kathwal",     branch: "B.E. CSE" },
 ];
 
 export default function AboutUs() {

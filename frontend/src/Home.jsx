@@ -1,6 +1,59 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Home.css";
+
+// --- AUTO SLIDER COMPONENT ---
+function AutoSlider({ children }) {
+  const trackRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    let animationFrameId;
+    const track = trackRef.current;
+    
+    const scrollStep = () => {
+      if (!isHovered && track) {
+        track.scrollLeft += 1.5; // adjust speed here
+        // Reset scroll when reaching the halfway point
+        if (track.scrollLeft >= track.scrollWidth / 2) {
+          track.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(scrollStep);
+    };
+
+    animationFrameId = requestAnimationFrame(scrollStep);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isHovered]);
+
+  const handleScrollLeft = () => {
+    if (trackRef.current) trackRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+  };
+
+  const handleScrollRight = () => {
+    if (trackRef.current) trackRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+  };
+
+  return (
+    <div 
+      className="slider-wrapper" 
+      onMouseEnter={() => setIsHovered(true)} 
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <button className={`slider-arrow left ${isHovered ? 'show' : ''}`} onClick={handleScrollLeft}>
+        &lt;
+      </button>
+      
+      <div className="slider-track" ref={trackRef}>
+        {children}
+      </div>
+
+      <button className={`slider-arrow right ${isHovered ? 'show' : ''}`} onClick={handleScrollRight}>
+        &gt;
+      </button>
+    </div>
+  );
+}
 
 export default function Home() {
   const navigate = useNavigate()
@@ -225,16 +278,14 @@ export default function Home() {
       {/* CATEGORIES */}
       <section className="section">
         <h2>Event Categories</h2>
-        <div className="slider-wrapper">
-          <div className="slider-track">
-            {[...categories, ...categories].map((cat, i) => (
-              <a key={i} href={cat.href} className="category">
-                <img src={cat.img} alt={cat.label} />
-                <span>{cat.label}</span>
-              </a>
-            ))}
-          </div>
-        </div>
+        <AutoSlider>
+          {[...categories, ...categories, ...categories, ...categories].map((cat, i) => (
+            <a key={i} href={cat.href} className="category">
+              <img src={cat.img} alt={cat.label} />
+              <span>{cat.label}</span>
+            </a>
+          ))}
+        </AutoSlider>
       </section>
 
       {/* STATS */}
@@ -257,18 +308,16 @@ export default function Home() {
       {/* CLUBS */}
       <section className="section">
         <h2>Explore Our Clubs</h2>
-        <div className="slider-wrapper">
-          <div className="slider-track">
-            {[...clubs, ...clubs].map((club, i) => (
-              <Link key={i} to={club.href} className="club-link">
-                <div className="club-card">
-                  <img src={club.img} alt={club.name} />
-                  <p>{club.name}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+        <AutoSlider>
+          {[...clubs, ...clubs, ...clubs, ...clubs].map((club, i) => (
+            <Link key={i} to={club.href} className="club-link">
+              <div className="club-card">
+                <img src={club.img} alt={club.name} />
+                <p>{club.name}</p>
+              </div>
+            </Link>
+          ))}
+        </AutoSlider>
       </section>
 
       {/* UPCOMING EVENTS */}

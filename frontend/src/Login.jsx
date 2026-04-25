@@ -19,6 +19,12 @@ async function createAccount(){
     alert("Please fill all fields")
     return
   }
+    // If length is NOT 10   OR   it is NOT a number
+  if (roll.length !== 10 || isNaN(roll)) {
+    alert("Roll number must be exactly 10 numbers!");
+    return;
+  }
+
 
   try {
     const res = await fetch("http://localhost:5000/api/signup", {
@@ -139,7 +145,7 @@ Already have account? <a onClick={showSignin}>Sign In</a>
 </div>
 
 <div className="footer">
-<b>Mobile App Code : 69696969</b>
+<b>Mobile App Code : 800002</b>
 <br/><br/>
 </div>
 
