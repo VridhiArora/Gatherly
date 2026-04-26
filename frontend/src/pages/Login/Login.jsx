@@ -145,7 +145,8 @@ Already have account? <a onClick={showSignin}>Sign In</a>
 </div>
 
 <div className="footer">
-<b>Mobile App Code : 800002</b>
+
+<b>Mobile App Code : 800002</b>   
 <br/><br/>
 </div>
 

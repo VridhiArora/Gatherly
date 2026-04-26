@@ -27,21 +27,7 @@ export default function Vibin() {
   return (
     <div className="vibin-wrap">
 
-      {/* HEADER */}
-      <header>
-        <div className="logo-section">
-          <img src="/LOGO2.png" alt="Chitkara Logo" />
-          <div>
-            <div className="main-name">CHITKARA</div>
-            <div className="sub-name">UNIVERSITY</div>
-          </div>
-        </div>
-      <nav>
-          <a href="/home">Home</a>
-          <a href="/about">About Us</a>
-          <a href="/contact">Contact Us</a>
-        </nav>
-      </header>
+      
 
       {/* HERO */}
       <section className="vibin-hero">

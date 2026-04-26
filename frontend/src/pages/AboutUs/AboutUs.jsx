@@ -30,21 +30,7 @@ export default function AboutUs() {
   return (
     <div className="aboutus-wrap">
 
-      {/* NAVBAR */}
-      <header>
-        <div className="logo-section">
-          <img src="/LOGO2.png" alt="Chitkara Logo" />
-          <div className="uni-name">
-            <span className="main-name">CHITKARA</span>
-            <span className="sub-name">UNIVERSITY</span>
-          </div>
-        </div>
-        <nav>
-          <Link to="/home">Home</Link>
-          <Link to="/contact">Contact Us</Link>
-          <a href="#">About Us</a>
-        </nav>
-      </header>
+      
 
       {/* HERO — purple gradient, no video */}
       <div className="aboutus-hero">

@@ -21,21 +21,7 @@ export default function ContactUs() {
   return (
     <div className="contact-wrap">
 
-      {/* NAVBAR */}
-      <header>
-        <div className="logo-section">
-          <img src="/LOGO2.png" alt="Chitkara Logo" />
-          <div className="uni-name">
-            <span className="main-name">CHITKARA</span>
-            <span className="sub-name">UNIVERSITY</span>
-          </div>
-        </div>
-        <nav>
-          <Link to="/home">Home</Link>
-          <Link to="/about">About Us</Link>
-          <a href="#">Contact</a>
-        </nav>
-      </header>
+      
 
       {/* HERO */}
       <div className="contact-hero">

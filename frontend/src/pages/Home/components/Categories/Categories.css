@@ -1,0 +1,49 @@
+.category {
+  min-width: 250px;
+  height: 180px;
+  overflow: visible; /* allow glow */
+  position: relative;
+}
+
+.category-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.category img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.category-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 15, 25, 0.95) 0%,
+    rgba(10, 15, 25, 0.6) 40%,
+    rgba(10, 15, 25, 0.2) 70%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.category span {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 2;
+  letter-spacing: 0.5px;
+}
+

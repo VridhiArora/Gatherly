@@ -1,20 +1,21 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
 import { useEffect } from "react"
-import Login from "./Login"
-import Home from "./Home"
-import CN from "./CN"
-import GFG from "./GFG"
-import IEEE from "./IEEE"
-import Vibin from "./Vibin"
-import Iste from "./Iste"
-import BitsNBytes from "./BitsNBytes"
-import AboutUs from "./AboutUs"
-import Contactus from "./Contactus"
-import Sports from "./Sports"
-import Cultural from "./Cultural"
-import Hostel from "./Hostel"
-import Technical from "./Technical"
-import Profile from "./Profile"
+import Navbar from "./components/Navbar"
+import Login from "./pages/Login/Login"
+import Home from "./pages/Home/Home"
+import CN from "./pages/CN/CN"
+import GFG from "./pages/GFG/GFG"
+import IEEE from "./pages/IEEE/IEEE"
+import Vibin from "./pages/Vibin/Vibin"
+import Iste from "./pages/Iste/Iste"
+import BitsNBytes from "./pages/BitsNBytes/BitsNBytes"
+import AboutUs from "./pages/AboutUs/AboutUs"
+import Contactus from "./pages/Contactus/Contactus"
+import Sports from "./pages/Sports/Sports"
+import Cultural from "./pages/Cultural/Cultural"
+import Hostel from "./pages/Hostel/Hostel"
+import Technical from "./pages/Technical/Technical"
+import Profile from "./pages/Profile/Profile"
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -24,10 +25,17 @@ function ScrollToTop() {
   return null;
 }
 
+function GlobalLayout() {
+  const location = useLocation();
+  if (location.pathname === '/') return null;
+  return <Navbar />;
+}
+
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <GlobalLayout />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
