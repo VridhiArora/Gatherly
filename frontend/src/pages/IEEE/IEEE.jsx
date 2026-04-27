@@ -125,9 +125,7 @@ export default function IEEE() {
       </section>
 
       {/* FOOTER */}
-      <footer>
-        © 2026 IEEE Student Chapter | Chitkara University
-      </footer>
+
 
     </div>
   );

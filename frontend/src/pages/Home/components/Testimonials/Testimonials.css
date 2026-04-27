@@ -1,36 +1,83 @@
+.testimonial-section {
+    background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.8) 15%, rgba(15, 23, 42, 1) 30%, rgba(2, 6, 23, 1) 100%);
+    border-top: none;
+    position: relative;
+    z-index: 1;
+    margin-top: -100px;
+    padding-top: 150px;
+}
+
 .review-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
-    margin-top: 40px;
+    margin-top: 50px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .review-card {
-    background: #f8f8f8;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 35px;
+    border-radius: 20px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
-    transition: 0.8s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.from-left { transform: translateX(-80px); }
-.from-right { transform: translateX(80px); }
-.from-top { transform: translateY(-80px); }
-.from-bottom { transform: translateY(80px); }
+.review-card::before {
+    content: '"';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 80px;
+    font-family: serif;
+    color: rgba(255, 255, 255, 0.03);
+    line-height: 1;
+}
+
+.from-left { transform: translateX(-50px); }
+.from-right { transform: translateX(50px); }
+.from-top { transform: translateY(-50px); }
+.from-bottom { transform: translateY(50px); }
 
 .review-card.show {
     opacity: 1;
     transform: translateX(0) translateY(0);
 }
 
+.review-card:hover {
+    transform: translateY(-10px);
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
 .review-card p {
-    font-size: 15px;
-    margin-bottom: 15px;
-    line-height: 1.6;
-    color: #444;
+    font-size: 16px;
+    margin-bottom: 25px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    position: relative;
+    z-index: 1;
 }
 
 .review-card h4 {
-    color: #0f172a;
+    color: #3b82f6;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .review-grid {
+        gap: 20px;
+        padding: 0 20px;
+    }
 }

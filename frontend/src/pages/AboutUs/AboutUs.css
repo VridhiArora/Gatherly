@@ -12,19 +12,7 @@ body, #root{ background:#0f172a; width:100%; overflow-x:hidden; }
     overflow-x:hidden;
 }
 
-/* ================= NAVBAR ================= */
-.aboutus-wrap header{
-    position:fixed; width:100%; padding:18px 80px;
-    display:flex; justify-content:space-between; align-items:center;
-    background:rgba(15,23,42,0.95); backdrop-filter:blur(10px); z-index:1000;
-}
-.aboutus-wrap .logo-section{ display:flex; align-items:center; gap:12px; }
-.aboutus-wrap .logo-section img{ width:42px; }
-.aboutus-wrap .uni-name{ display:flex; flex-direction:column; line-height:1; }
-.aboutus-wrap .main-name{ color:white; font-weight:700; letter-spacing:1px; }
-.aboutus-wrap .sub-name{ color:white; font-size:12px; letter-spacing:2px; }
-.aboutus-wrap nav a{ color:white; margin-left:28px; text-decoration:none; font-weight:500; transition:0.3s; }
-.aboutus-wrap nav a:hover{ color:#818cf8; }
+
 
 /* ================= HERO ================= */
 .aboutus-hero{
@@ -300,13 +288,7 @@ body, #root{ background:#0f172a; width:100%; overflow-x:hidden; }
 .about-team-card .branch{ font-size:12px; color:#64748b; }
 
 /* ================= FOOTER ================= */
-.aboutus-wrap footer{
-    background:#020617;
-    color:rgba(255,255,255,0.6);
-    text-align:center;
-    padding:28px;
-    font-size:14px;
-}
+
 
 /* ================= RESPONSIVE ================= */
 @media(max-width:900px){

@@ -9,7 +9,7 @@ import Clubs from "./components/Clubs";
 import UpcomingEvents from "./components/UpcomingEvents";
 import Gallery from "./components/Gallery";
 import Testimonials from "./components/Testimonials";
-import Footer from "../../components/Footer";
+
 import RegistrationModal from "../../components/RegistrationModal";
 
 // --- GRAINIENT BACKGROUND COMPONENT ---
@@ -17,25 +17,25 @@ function GrainientBackground() {
   return (
     <div className="grainient-bg-wrapper">
       <Grainient
-        color1="#F8fafc"
-        color2="#d8b4fe"
-        color3="#a5b4fc"
-        timeSpeed={0.2}
-        colorBalance={0.3}
-        warpStrength={0.4}
-        warpFrequency={1.5}
-        warpSpeed={0.3}
-        warpAmplitude={20}
+        color1="#0f172a"
+        color2="#1e1b4b"
+        color3="#162032"
+        timeSpeed={0.15}
+        colorBalance={0.4}
+        warpStrength={0.3}
+        warpFrequency={1.2}
+        warpSpeed={0.2}
+        warpAmplitude={15}
         blendAngle={0}
-        blendSoftness={0.08}
-        rotationAmount={500}
+        blendSoftness={0.1}
+        rotationAmount={400}
         noiseScale={2}
-        grainAmount={0.08}
+        grainAmount={0.05}
         grainScale={1.5}
         grainAnimated={false}
-        contrast={1.1}
+        contrast={1.0}
         gamma={1}
-        saturation={0.9}
+        saturation={0.6}
         centerX={0}
         centerY={0}
         zoom={0.9}
@@ -68,13 +68,13 @@ export default function Home() {
       />
 
       <Hero onRegisterClick={openForm} />
-      
+      <Categories />
       <Stats />
       <Clubs />
       <UpcomingEvents onRegisterClick={openForm} />
       <Gallery />
       <Testimonials />
-      <Footer />
+
     </div>
   );
 }

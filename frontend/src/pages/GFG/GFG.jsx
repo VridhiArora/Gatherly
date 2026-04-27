@@ -135,7 +135,7 @@ export default function GFG() {
       </section>
 
       {/* FOOTER */}
-      <footer>© 2026 GeeksforGeeks Student Chapter | Chitkara University</footer>
+
 
     </div>
   );

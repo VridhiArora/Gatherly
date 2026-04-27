@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Grainient from "../../components/Grainient";
 import "./Profile.css";
 
 export default function Profile() {
@@ -49,13 +48,8 @@ export default function Profile() {
   };
 
   return (
-    <>
-      <div className="grainient-bg-wrapper">
-        <Grainient />
-      </div>
-      
-      <div className="profile-page-wrapper">
-        <div className="profile-container">
+    <div className="profile-page-wrapper">
+      <div className="profile-container">
           
           {/* ================= LEFT COLUMN: SIDEBAR ================= */}
           <div className="dash-card profile-sidebar">
@@ -154,7 +148,6 @@ export default function Profile() {
           </div>
 
         </div>
-      </div>
-    </>
+    </div>
   );
 }

@@ -15,14 +15,7 @@
 .bnb-wrap h2{ font-size:36px; margin-bottom:45px; text-align:center; }
 .bnb-wrap .highlight{ color:#facc15; }
 
-/* NAVBAR */
-.bnb-wrap header{ position:fixed; width:100%; padding:18px 80px; display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.9); backdrop-filter:blur(10px); z-index:1000; }
-.bnb-wrap .logo-section{ display:flex; align-items:center; gap:12px; }
-.bnb-wrap .logo-section img{ width:38px; }
-.bnb-wrap .main-name{ font-weight:800; }
-.bnb-wrap .sub-name{ font-size:12px; opacity:0.8; }
-.bnb-wrap nav a{ color:#f1f5f9; margin-left:28px; text-decoration:none; transition:0.3s; }
-.bnb-wrap nav a:hover{ color:#facc15; }
+
 
 /* HERO */
 .bnb-wrap .bnb-hero{ min-height:65vh; display:flex; align-items:center; justify-content:space-between; padding:0 100px; padding-top:120px; margin-bottom:60px; }
@@ -71,5 +64,4 @@
 /* CONTACT */
 .bnb-wrap .contact-box{ width:100vw; margin-left:calc(-50vw + 50%); background:#1e293b; text-align:center; line-height:2; font-size:16px; padding:40px 20px; color:white; border-radius:0; }
 
-/* FOOTER */
-.bnb-wrap footer{ background:#020617; text-align:center; padding:25px; font-size:14px; opacity:0.7; }
+/* FOOTER */

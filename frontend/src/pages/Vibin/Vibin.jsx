@@ -121,7 +121,7 @@ export default function Vibin() {
       </section>
 
       {/* FOOTER */}
-      <footer>© 2026 Vibin'z Club | Chitkara University</footer>
+
 
     </div>
   );

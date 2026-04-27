@@ -23,7 +23,7 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="section" id="testimonials" style={{ background: "#2a0f0fff" }}>
+    <section className="section testimonial-section" id="testimonials">
       <h2 className="section-title-light">What Students Say</h2>
       <div className="review-grid">
         {reviews.map((rev, i) => (

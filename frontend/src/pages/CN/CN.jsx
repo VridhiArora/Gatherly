@@ -127,9 +127,7 @@ export default function CodingNinjas() {
       </section>
 
       {/* FOOTER */}
-      <footer>
-        © 2026 Coding Ninjas Student Chapter | Chitkara University
-      </footer>
+
 
     </div>
   );

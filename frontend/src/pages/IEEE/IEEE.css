@@ -14,18 +14,7 @@
 .ieee-wrap h2{ font-size:38px; margin-bottom:50px; text-align:center; }
 .ieee-wrap .highlight{ color:#00bfff; }
 
-/* NAVBAR */
-.ieee-wrap header{
-    position:fixed; width:100%; padding:18px 80px;
-    display:flex; justify-content:space-between; align-items:center;
-    background:rgba(11,18,32,0.95); backdrop-filter:blur(10px); z-index:1000;
-}
-.ieee-wrap .logo-section{ display:flex; align-items:center; gap:12px; }
-.ieee-wrap .logo-section img{ width:38px; }
-.ieee-wrap .main-name{ font-weight:800; }
-.ieee-wrap .sub-name{ font-size:12px; opacity:0.8; }
-.ieee-wrap nav a{ color:#f1f5f9; margin-left:28px; text-decoration:none; transition:0.3s; }
-.ieee-wrap nav a:hover{ color:#00bfff; }
+
 
 /* HERO */
 .ieee-wrap .ieee-hero{
@@ -94,5 +83,4 @@
     color:white;
     border-radius:0;
 }
-/* FOOTER */
-.ieee-wrap footer{ background:#020617; text-align:center; padding:25px; font-size:14px; opacity:0.7; }
+/* FOOTER */

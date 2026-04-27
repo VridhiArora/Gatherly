@@ -94,21 +94,7 @@ export default function Technical() {
   return (
     <div className="te-wrap">
 
-      {/* NAVBAR */}
-      <header className="te-header">
-        <div className="te-logo-section">
-          <img src="/LOGO2.png" alt="Chitkara" />
-          <div className="te-uni-name">
-            <span className="te-main-name">CHITKARA</span>
-            <span className="te-sub-name">UNIVERSITY</span>
-          </div>
-        </div>
-        <nav>
-          <Link to="/home">Home</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/contact">Contact Us</Link>
-        </nav>
-      </header>
+
 
       {/* HERO */}
       <section className="te-hero">
@@ -232,9 +218,7 @@ export default function Technical() {
         </div>
       </section>
 
-      <footer className="te-footer">
-        © 2026 Gatherly | Chitkara University Technical Events
-      </footer>
+
 
     </div>
   );

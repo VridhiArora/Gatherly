@@ -23,15 +23,15 @@ export default function Categories() {
       <BorderGlow
         key={i}
         className="category"
-        edgeSensitivity={30}
-        glowColor="40 80 80"
+        edgeSensitivity={25}
+        glowColor="220 80 100"
         backgroundColor="#120F17"
         borderRadius={20}
-        glowRadius={40}
-        glowIntensity={1}
-        coneSpread={25}
+        glowRadius={60}
+        glowIntensity={1.5}
+        coneSpread={35}
         animated={false}
-        colors={['#c084fc', '#f472b6', '#38bdf8']}
+        colors={['#818cf8', '#c084fc', '#38bdf8']}
       >
         <a href={cat.href} className="category-link">
           <img src={cat.img} alt={cat.label} />

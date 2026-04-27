@@ -14,7 +14,7 @@ const eventsRow2 = [
 
 export default function UpcomingEvents({ onRegisterClick }) {
   return (
-    <section className="section">
+    <section className="section" id="events" style={{ background: "transparent" }}>
       <h2 className="section-title-dark">Upcoming Events</h2>
       <div className="events">
         {eventsRow1.map((ev, i) => (

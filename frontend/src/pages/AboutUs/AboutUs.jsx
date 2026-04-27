@@ -131,7 +131,7 @@ export default function AboutUs() {
       </section>
 
       {/* FOOTER */}
-      <footer>© 2026 Gatherly | Chitkara University Event Portal</footer>
+
 
     </div>
   );

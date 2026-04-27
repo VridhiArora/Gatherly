@@ -1,17 +1,9 @@
-.grainient-bg-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 0;
-    pointer-events: none;
-}
+/* Profile Page Styles */
 
 .profile-page-wrapper {
     height: 100vh;
-    padding-top: 85px;
-    padding-bottom: 20px;
+    padding-top: 90px;
+    padding-bottom: 24px;
     box-sizing: border-box;
     display: flex;
     align-items: stretch;
@@ -19,33 +11,34 @@
     color: white;
     position: relative;
     z-index: 10;
+    background-color: #0f172a;
+    overflow: hidden; /* Prevent overall page scrolling */
 }
 
 .profile-container {
     width: 100%;
     height: 100%;
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px;
     display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 30px;
+    grid-template-columns: 340px 1fr;
+    gap: 24px;
     align-items: stretch;
 }
 
 /* Base Dashboard Card */
 .dash-card {
-    background: rgba(15, 23, 42, 0.45);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
     padding: 24px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100%; /* Fill the grid area */
     box-sizing: border-box;
+    overflow: hidden; /* Handle scrolling internally */
 }
 
 /* ================= LEFT COLUMN: SIDEBAR ================= */
@@ -96,10 +89,10 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 20px;
+    gap: 14px;
+    margin-bottom: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 24px;
 }
 
 .stat-row {
@@ -150,14 +143,15 @@
 
 /* ================= RIGHT COLUMN: DASHBOARD ================= */
 .dash-header {
-    margin: 0 0 25px;
-    font-size: 20px;
-    font-weight: 600;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0 0 32px;
+    font-size: 22px;
+    font-weight: 700;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #f1f5f9;
 }
 
 .dash-header-count {
@@ -283,14 +277,26 @@
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 900px) {
+    .profile-page-wrapper {
+        height: auto;
+        overflow: visible;
+        padding-top: 80px;
+    }
+
     .profile-container {
         grid-template-columns: 1fr;
+        height: auto;
     }
     
     .profile-sidebar {
         max-width: 400px;
         margin: 0 auto;
         width: 100%;
+        height: auto;
+    }
+
+    .dash-card {
+        height: auto;
     }
 
     .events-table-header {

@@ -14,18 +14,7 @@
 .cn-wrap h2{ font-size:38px; margin-bottom:50px; text-align:center; }
 .cn-wrap .highlight{ color:#ff6b00; }
 
-/* NAVBAR */
-.cn-wrap header{
-    position:fixed; width:100%; padding:18px 80px;
-    display:flex; justify-content:space-between; align-items:center;
-    background:rgba(15,23,42,0.95); backdrop-filter:blur(10px); z-index:1000;
-}
-.cn-wrap .logo-section{ display:flex; align-items:center; gap:12px; }
-.cn-wrap .logo-section img{ width:38px; }
-.cn-wrap .main-name{ font-weight:800; }
-.cn-wrap .sub-name{ font-size:12px; opacity:0.8; }
-.cn-wrap nav a{ color:#f1f5f9; margin-left:28px; text-decoration:none; transition:0.3s; }
-.cn-wrap nav a:hover{ color:#ff6b00; }
+
 
 /* HERO */
 .cn-wrap .cn-hero{
@@ -93,5 +82,4 @@
     color:white;
     border-radius:0;
 }
-/* FOOTER */
-.cn-wrap footer{ background:#020617; text-align:center; padding:25px; font-size:14px; opacity:0.7; }
+/* FOOTER */

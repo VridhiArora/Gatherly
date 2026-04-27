@@ -16,6 +16,7 @@ import Cultural from "./pages/Cultural/Cultural"
 import Hostel from "./pages/Hostel/Hostel"
 import Technical from "./pages/Technical/Technical"
 import Profile from "./pages/Profile/Profile"
+import Footer from "./components/Footer"
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,8 +27,6 @@ function ScrollToTop() {
 }
 
 function GlobalLayout() {
-  const location = useLocation();
-  if (location.pathname === '/') return null;
   return <Navbar />;
 }
 
@@ -36,23 +35,26 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <GlobalLayout />
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/cn" element={<CN />} />
-        <Route path="/gfg" element={<GFG />} />
-        <Route path="/ieee" element={<IEEE />} />
-        <Route path="/vibin" element={<Vibin />} />
-        <Route path="/iste" element={<Iste />} />
-        <Route path="/bitsnbytes" element={<BitsNBytes />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/contact" element={<Contactus />} />
-        <Route path="/sports" element={<Sports />} />
-        <Route path="/cultural" element={<Cultural />} />
-        <Route path="/hostel" element={<Hostel />} />
-        <Route path="/technical" element={<Technical />} />
-        <Route path="/profile" element={<Profile/>}/>
-      </Routes>
+      <div className="app-content">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/cn" element={<CN />} />
+          <Route path="/gfg" element={<GFG />} />
+          <Route path="/ieee" element={<IEEE />} />
+          <Route path="/vibin" element={<Vibin />} />
+          <Route path="/iste" element={<Iste />} />
+          <Route path="/bitsnbytes" element={<BitsNBytes />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<Contactus />} />
+          <Route path="/sports" element={<Sports />} />
+          <Route path="/cultural" element={<Cultural />} />
+          <Route path="/hostel" element={<Hostel />} />
+          <Route path="/technical" element={<Technical />} />
+          <Route path="/profile" element={<Profile/>}/>
+        </Routes>
+      </div>
+      <Footer />
     </BrowserRouter>
   )
 }

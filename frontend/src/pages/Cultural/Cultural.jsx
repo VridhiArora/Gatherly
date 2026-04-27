@@ -80,21 +80,7 @@ export default function Cultural() {
   return (
     <div className="cu-wrap">
 
-      {/* HEADER */}
-      <header className="cu-header">
-        <div className="cu-logo-section">
-          <img src="/LOGO2.png" alt="Chitkara" />
-          <div className="cu-uni-name">
-            <span className="cu-main-name">CHITKARA</span>
-            <span className="cu-sub-name">UNIVERSITY</span>
-          </div>
-        </div>
-       <nav>
-          <a href="/home">Home</a>
-          <a href="/about">About Us</a>
-          <a href="/contact">Contact Us</a>
-        </nav>
-      </header>
+
 
       {/* HERO */}
       <section className="cu-hero">
@@ -196,9 +182,7 @@ export default function Cultural() {
         </div>
       </section>
 
-      <footer className="cu-footer">
-        © 2026 Gatherly | Chitkara University Cultural Events | All Rights Reserved
-      </footer>
+
 
     </div>
   );

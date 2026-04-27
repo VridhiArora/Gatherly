@@ -1,19 +1,7 @@
 /* ================= GLOBAL WRAP ================= */
 .ho-wrap { background: #0f172a; color: white; overflow-x: hidden; min-height: 100vh; font-family: 'Montserrat', sans-serif; }
 
-/* ================= NAVBAR ================= */
-.ho-header {
-  position: fixed; width: 100%; padding: 18px 80px;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(15,23,42,0.92); backdrop-filter: blur(10px); z-index: 1000;
-}
-.ho-logo-section { display: flex; align-items: center; gap: 12px; }
-.ho-logo-section img { width: 42px; }
-.ho-uni-name { display: flex; flex-direction: column; line-height: 1; }
-.ho-main-name { color: white; font-weight: 700; letter-spacing: 1px; }
-.ho-sub-name { color: white; font-size: 12px; letter-spacing: 2px; }
-.ho-header nav a { color: white; margin-left: 28px; text-decoration: none; font-weight: 500; transition: 0.3s; }
-.ho-header nav a:hover { color: #cffafe; }
+
 
 /* ================= HERO ================= */
 .ho-hero {
@@ -187,5 +175,4 @@
 }
 .ho-gallery-track img:hover { transform: scale(1.05); border-color: rgba(6,182,212,0.3); box-shadow: 0 8px 25px rgba(6,182,212,0.15); }
 
-/* ================= FOOTER ================= */
-.ho-footer { background: #020617; text-align: center; padding: 22px; color: #64748b; font-size: 14px; }
+/* ================= FOOTER ================= */

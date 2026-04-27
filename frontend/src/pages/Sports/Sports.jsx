@@ -81,21 +81,7 @@ export default function Sports() {
   return (
     <div className="sp-wrap">
 
-      {/* HEADER */}
-      <header className="sp-header">
-        <div className="sp-logo-section">
-          <img src="/LOGO2.png" alt="Chitkara" />
-          <div className="sp-uni-name">
-            <span className="sp-main-name">CHITKARA</span>
-            <span className="sp-sub-name">UNIVERSITY</span>
-          </div>
-        </div>
-       <nav>
-          <a href="/home">Home</a>
-          <a href="/about">About Us</a>
-          <a href="/contact">Contact Us</a>
-        </nav>
-      </header>
+
 
       {/* HERO */}
       <section className="sp-hero">
@@ -204,9 +190,7 @@ export default function Sports() {
         </div>
       </section>
 
-      <footer className="sp-footer">
-        © 2026 Gatherly | Chitkara University Sports Events | All Rights Reserved
-      </footer>
+
 
     </div>
   );

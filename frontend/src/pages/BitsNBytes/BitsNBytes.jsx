@@ -248,7 +248,7 @@ export default function BitsNBytes() {
       </section>
 
       {/* FOOTER */}
-      <footer>© 2026 Bits N Bytes Club | Chitkara University</footer>
+
 
     </div>
   );

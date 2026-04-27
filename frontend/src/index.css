@@ -24,11 +24,35 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #0f172a;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.app-content {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.global-navbar {
+  z-index: 100;
+}
+
+.site-footer {
+  background: #020617 !important;
+  color: #f1f5f9;
+  width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 h1, h2, h3 {

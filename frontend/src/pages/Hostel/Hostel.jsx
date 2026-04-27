@@ -61,21 +61,7 @@ export default function Hostel() {
   return (
     <div className="ho-wrap">
 
-      {/* NAVBAR */}
-      <header className="ho-header">
-        <div className="ho-logo-section">
-          <img src="/LOGO2.png" alt="Chitkara" />
-          <div className="ho-uni-name">
-            <span className="ho-main-name">CHITKARA</span>
-            <span className="ho-sub-name">UNIVERSITY</span>
-          </div>
-        </div>
-        <nav>
-          <a href="/home">Home</a>
-          <a href="/about">About Us</a>
-          <a href="/contact">Contact Us</a>
-        </nav>
-      </header>
+
 
       {/* HERO */}
       <section className="ho-hero">
@@ -177,9 +163,7 @@ export default function Hostel() {
         </div>
       </section>
 
-      <footer className="ho-footer">
-        © 2026 Gatherly | Chitkara University Hostel Events
-      </footer>
+
 
     </div>
   );

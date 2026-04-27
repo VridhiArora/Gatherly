@@ -129,7 +129,7 @@ export default function ISTE() {
       </section>
 
       {/* FOOTER */}
-      <footer>© 2026 ISTE Student Chapter | Chitkara University</footer>
+
 
     </div>
   );
