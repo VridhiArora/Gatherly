@@ -10,7 +10,6 @@ import UpcomingEvents from "./components/UpcomingEvents";
 import Gallery from "./components/Gallery";
 import Testimonials from "./components/Testimonials";
 
-import RegistrationModal from "../../components/RegistrationModal";
 
 // --- GRAINIENT BACKGROUND COMPONENT ---
 function GrainientBackground() {
@@ -47,25 +46,16 @@ function GrainientBackground() {
 export default function Home() {
   const username = localStorage.getItem("username");
 
-  const [showForm, setShowForm] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState("");
-
   function openForm(eventTitle) {
     const userId = localStorage.getItem("userId");
     if (!userId) { alert("Please login first!"); return; }
-    setSelectedEvent(eventTitle);
-    setShowForm(true);
+    window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle } }));
   }
 
   return (
     <div className="chitkara-wrap">
       <GrainientBackground />
-      
-      <RegistrationModal 
-        isOpen={showForm} 
-        onClose={() => setShowForm(false)} 
-        eventTitle={selectedEvent} 
-      />
+
 
       <Hero onRegisterClick={openForm} />
       <Categories />

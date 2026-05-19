@@ -63,7 +63,11 @@ export default function CodingNinjas() {
                   <div className="event-info">
                     <h4>{ev.title}</h4>
                     <p>{ev.desc}</p>
-                    <button className="register-btn" disabled={past}>
+                    <button className="register-btn" disabled={past} onClick={() => {
+                      const userId = localStorage.getItem("userId");
+                      if (!userId) { alert("Please login first!"); return; }
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title } }));
+                    }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>
                   </div>

@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 
-export default function RegistrationModal({ isOpen, onClose, eventTitle }) {
+export default function RegistrationModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [eventTitle, setEventTitle] = useState("");
   const [formData, setFormData] = useState({ name: "", rollno: "", email: "", phone: "" });
   const [formMsg, setFormMsg] = useState("");
 
   useEffect(() => {
-    if (isOpen) {
+    const handleOpen = (e) => {
+      setEventTitle(e.detail.eventTitle);
       setFormData({
         name: localStorage.getItem("username") || "",
         rollno: localStorage.getItem("rollno") || "",
@@ -13,8 +16,13 @@ export default function RegistrationModal({ isOpen, onClose, eventTitle }) {
         phone: ""
       });
       setFormMsg("");
-    }
-  }, [isOpen]);
+      setIsOpen(true);
+    };
+    window.addEventListener("open-registration", handleOpen);
+    return () => window.removeEventListener("open-registration", handleOpen);
+  }, []);
+
+  const onClose = () => setIsOpen(false);
 
   async function submitRegistration() {
     const userId = localStorage.getItem("userId");

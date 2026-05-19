@@ -17,6 +17,7 @@ import Hostel from "./pages/Hostel/Hostel"
 import Technical from "./pages/Technical/Technical"
 import Profile from "./pages/Profile/Profile"
 import Footer from "./components/Footer"
+import RegistrationModal from "./components/RegistrationModal"
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -27,6 +28,8 @@ function ScrollToTop() {
 }
 
 function GlobalLayout() {
+  const { pathname } = useLocation();
+  if (pathname === "/") return null;
   return <Navbar />;
 }
 
@@ -54,6 +57,7 @@ function App() {
           <Route path="/profile" element={<Profile/>}/>
         </Routes>
       </div>
+      <RegistrationModal />
       <Footer />
     </BrowserRouter>
   )

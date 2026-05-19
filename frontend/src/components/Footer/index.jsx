@@ -8,10 +8,9 @@ export default function Footer() {
         <div className="footer-top">
           <div className="footer-brand">
             <div className="footer-logo">
-              <img src="/LOGO2.png" alt="Chitkara Logo" />
+              <div className="big-g-logo">G</div>
               <div className="brand-text">
-                <span className="main-name">CHITKARA</span>
-                <span className="sub-name">UNIVERSITY</span>
+                <span className="main-name">GATHERLY</span>
               </div>
             </div>
             <p className="brand-desc">
@@ -50,7 +49,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p>© 2026 Gatherly | Chitkara University. All Rights Reserved.</p>
+          <p>© 2026 Gatherly. All Rights Reserved.</p>
           <div className="footer-bottom-links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>

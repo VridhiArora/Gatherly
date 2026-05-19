@@ -19,11 +19,7 @@ async function createAccount(){
     alert("Please fill all fields")
     return
   }
-    // If length is NOT 10   OR   it is NOT a number
-  if (roll.length !== 10 || isNaN(roll)) {
-    alert("Roll number must be exactly 10 numbers!");
-    return;
-  }
+
 
 
   try {

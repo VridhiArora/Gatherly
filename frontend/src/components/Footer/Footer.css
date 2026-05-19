@@ -33,9 +33,11 @@
   margin-bottom: 20px;
 }
 
-.footer-logo img {
-  width: 45px;
-  height: auto;
+.big-g-logo {
+  font-size: 42px;
+  font-weight: 900;
+  color: #3b82f6;
+  line-height: 1;
 }
 
 .brand-text {
