@@ -24,7 +24,6 @@ export default function Navbar() {
           <img src="/gatherly.png" alt="Gatherly Logo" className="nav-logo" />
           <div className="uni-name">
             <span className="main-name">GATHERLY</span>
-            <span className="sub-name">CAMPUS EVENTS</span>
           </div>
         </Link>
         
