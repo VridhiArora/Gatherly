@@ -5,6 +5,14 @@ const jwt = require("jsonwebtoken")
 const cors = require("cors")
 require("dotenv").config()
 
+const {
+  handleValidationErrors,
+  signupRules,
+  loginRules,
+  registerEventRules,
+  contactRules
+} = require("./middleware/validation")
+
 const SALT_ROUNDS = 10
 
 const app = express()
@@ -72,14 +80,8 @@ function verifyToken(req, res, next) {
 }
 
 // ── POST /api/signup ──
-app.post("/api/signup", async (req, res) => {
+app.post("/api/signup", signupRules, handleValidationErrors, async (req, res) => {
   const { username, rollno, password, session } = req.body
-
-  if (!username || !rollno || !password)
-    return res.status(400).json({ error: "All fields are required." })
-
-  if (password.length < 4)
-    return res.status(400).json({ error: "Password must be at least 4 characters." })
 
   try {
     const existing = await User.findOne({ $or: [{ username }, { rollno }] })
@@ -97,11 +99,8 @@ app.post("/api/signup", async (req, res) => {
 })
 
 // ── POST /api/login ──
-app.post("/api/login", async (req, res) => {
+app.post("/api/login", loginRules, handleValidationErrors, async (req, res) => {
   const { username, rollno, password } = req.body
-
-  if (!username || !rollno || !password)
-    return res.status(400).json({ error: "All fields are required." })
 
   try {
     const user = await User.findOne({ username, rollno })
@@ -146,12 +145,9 @@ app.post("/api/login", async (req, res) => {
 // ── POST /api/register-event (PROTECTED) ──
 // verifyToken runs first. userId/username/rollno come from the verified token —
 // the client can no longer spoof who is registering.
-app.post("/api/register-event", verifyToken, async (req, res) => {
+app.post("/api/register-event", verifyToken, registerEventRules, handleValidationErrors, async (req, res) => {
   const { email, phone, clubName, eventName } = req.body
   const { userId, username, rollno } = req.user  // trusted — from token
-
-  if (!email || !eventName)
-    return res.status(400).json({ error: "Email and event name are required." })
 
   try {
     const existing = await EventReg.findOne({ userId, eventName })
@@ -182,17 +178,8 @@ app.get("/api/my-events", verifyToken, async (req, res) => {
 // ── POST /api/contact ──
 // Public endpoint for submitting the contact form. Validates input properties,
 // checks email structure, persists the record, and triggers local development logging.
-app.post("/api/contact", async (req, res) => {
+app.post("/api/contact", contactRules, handleValidationErrors, async (req, res) => {
   const { name, roll, email, subject, message } = req.body
-
-  // Validation: Check for presence of required parameters
-  if (!name || !email || !message)
-    return res.status(400).json({ error: "Name, email, and message are required." })
-
-  // Validation: Enforce clean email formatting
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!emailRegex.test(email))
-    return res.status(400).json({ error: "Please provide a valid email address." })
 
   try {
     const newMessage = await ContactMessage.create({
