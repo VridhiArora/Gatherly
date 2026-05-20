@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./Cultural.css";
+import { isLoggedIn } from "../../utils/auth";
 
 const heroSlides = [
   { src: "/bhangra2.png", alt: "Bhangra" },
@@ -129,9 +130,8 @@ export default function Cultural() {
                     <h3>{ev.title}</h3>
                     <p>{ev.desc}</p>
                     <button className="cu-reg-btn" disabled={past} onClick={() => {
-                      const userId = localStorage.getItem("userId");
-                      if (!userId) { alert("Please login first!"); return; }
-                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title } }));
+                      if (!isLoggedIn()) { alert("Please login first!"); return; }
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "Vibin'z" } }));
                     }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>

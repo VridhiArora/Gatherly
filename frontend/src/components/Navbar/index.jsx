@@ -1,11 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { getUser } from "../../utils/auth";
 import "./Navbar.css";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const username = localStorage.getItem("username");
+  const user = getUser();
+  const username = user?.username;
 
   useEffect(() => {
     const handleScroll = () => {

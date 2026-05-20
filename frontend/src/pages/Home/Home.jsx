@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Home.css";
 import Grainient from '../../components/Grainient';
+import { isLoggedIn } from "../../utils/auth";
 
 import Hero from "./components/Hero";
 import Categories from "./components/Categories";
@@ -44,12 +45,10 @@ function GrainientBackground() {
 }
 
 export default function Home() {
-  const username = localStorage.getItem("username");
 
-  function openForm(eventTitle) {
-    const userId = localStorage.getItem("userId");
-    if (!userId) { alert("Please login first!"); return; }
-    window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle } }));
+  function openForm(eventTitle, clubName) {
+    if (!isLoggedIn()) { alert("Please login first!"); return; }
+    window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle, clubName } }));
   }
 
   return (

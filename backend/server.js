@@ -1,11 +1,10 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 const cors = require("cors")
 require("dotenv").config()
 
-// Number of salt rounds for bcrypt — 10 is the industry-standard sweet spot
-// (higher = slower hash = harder to brute-force, but also slower signup)
 const SALT_ROUNDS = 10
 
 const app = express()
@@ -29,16 +28,37 @@ const User = mongoose.model("User", userSchema)
 
 // ── Event Registration Schema ──
 const eventRegSchema = new mongoose.Schema({
-  userId:    { type: String, required: true },
-  username:  { type: String, required: true },
-  rollno:    { type: String, required: true },
-  email:     { type: String, required: true },
-  phone:     { type: String },
-  clubName:  { type: String },
-  eventName: { type: String, required: true },
+  userId:       { type: String, required: true },
+  username:     { type: String, required: true },
+  rollno:       { type: String, required: true },
+  email:        { type: String, required: true },
+  phone:        { type: String },
+  clubName:     { type: String },
+  eventName:    { type: String, required: true },
   registeredAt: { type: Date, default: Date.now }
 })
 const EventReg = mongoose.model("EventReg", eventRegSchema)
+
+// ── Auth Middleware ──
+// Reads the token from the Authorization header, verifies it using JWT_SECRET,
+// and attaches the decoded user object to req.user for downstream route handlers.
+// Any route using this middleware is automatically protected.
+function verifyToken(req, res, next) {
+  const authHeader = req.headers["authorization"]
+
+  if (!authHeader || !authHeader.startsWith("Bearer "))
+    return res.status(401).json({ error: "Access denied. Please log in." })
+
+  const token = authHeader.split(" ")[1]
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = decoded  // { userId, username, rollno, session, iat, exp }
+    next()
+  } catch (err) {
+    return res.status(401).json({ error: "Session expired. Please log in again." })
+  }
+}
 
 // ── POST /api/signup ──
 app.post("/api/signup", async (req, res) => {
@@ -47,7 +67,6 @@ app.post("/api/signup", async (req, res) => {
   if (!username || !rollno || !password)
     return res.status(400).json({ error: "All fields are required." })
 
-  // Basic length check — prevent single-character passwords
   if (password.length < 4)
     return res.status(400).json({ error: "Password must be at least 4 characters." })
 
@@ -56,12 +75,9 @@ app.post("/api/signup", async (req, res) => {
     if (existing)
       return res.status(409).json({ error: "Username or Roll No already exists." })
 
-    // Hash the password before storing — the raw password NEVER touches the DB
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
-
     const user = await User.create({ username, rollno, password: hashedPassword, session })
 
-    // Never return the password field in the response
     return res.status(201).json({ message: "Account created!", userId: user._id })
   } catch (err) {
     console.error("Signup Error:", err)
@@ -77,60 +93,60 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ error: "All fields are required." })
 
   try {
-    // Find by username + rollno only — we verify the password separately
     const user = await User.findOne({ username, rollno })
     if (!user)
       return res.status(401).json({ error: "Invalid credentials." })
 
-    // ── Password verification with lazy migration ──
-    // bcrypt hashes always start with "$2b$" — use this to detect plaintext accounts
-    // from before hashing was introduced, and silently upgrade them on first login.
+    // ── Password check with lazy migration for old plaintext accounts ──
     let passwordMatch = false
-
     const isAlreadyHashed = user.password.startsWith("$2b$") || user.password.startsWith("$2a$")
 
     if (isAlreadyHashed) {
-      // Normal path — compare the input against the stored bcrypt hash
       passwordMatch = await bcrypt.compare(password, user.password)
     } else {
-      // Legacy path — this user's password was stored before hashing was added
-      // Check if the raw input matches the old plaintext password
       passwordMatch = (password === user.password)
-
       if (passwordMatch) {
-        // Silently upgrade: hash the correct password and save it now
         const upgraded = await bcrypt.hash(password, SALT_ROUNDS)
         await User.updateOne({ _id: user._id }, { password: upgraded })
-        console.log(`🔐 Upgraded plaintext password to bcrypt hash for user: ${user.username}`)
+        console.log(`🔐 Upgraded plaintext password for: ${user.username}`)
       }
     }
 
     if (!passwordMatch)
       return res.status(401).json({ error: "Invalid credentials." })
 
-    // Never return the password field — send only what the frontend needs
-    return res.json({
-      message:  "Login successful!",
-      userId:   user._id,
-      username: user.username,
-      rollno:   user.rollno,
-      session:  user.session
-    })
+    // ── Generate JWT ──
+    // The payload carries just enough info for the frontend.
+    // The server will verify this signature on every protected request.
+    const token = jwt.sign(
+      { userId: user._id, username: user.username, rollno: user.rollno, session: user.session },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    )
+
+    // Return only the token — no raw user fields exposed
+    return res.json({ message: "Login successful!", token })
   } catch (err) {
     console.error("Login Error:", err)
     return res.status(500).json({ error: "Server error." })
   }
 })
 
-// ── POST /api/register-event ──
-app.post("/api/register-event", async (req, res) => {
-  const { userId, username, rollno, email, phone, clubName, eventName } = req.body
-  if (!userId || !username || !rollno || !email || !eventName)
-    return res.status(400).json({ error: "All fields required." })
+// ── POST /api/register-event (PROTECTED) ──
+// verifyToken runs first. userId/username/rollno come from the verified token —
+// the client can no longer spoof who is registering.
+app.post("/api/register-event", verifyToken, async (req, res) => {
+  const { email, phone, clubName, eventName } = req.body
+  const { userId, username, rollno } = req.user  // trusted — from token
+
+  if (!email || !eventName)
+    return res.status(400).json({ error: "Email and event name are required." })
+
   try {
     const existing = await EventReg.findOne({ userId, eventName })
     if (existing)
       return res.status(409).json({ error: "Already registered for this event!" })
+
     const reg = await EventReg.create({ userId, username, rollno, email, phone, clubName, eventName })
     return res.status(201).json({ message: "Registered successfully!", reg })
   } catch (err) {
@@ -138,14 +154,23 @@ app.post("/api/register-event", async (req, res) => {
   }
 })
 
-// ── GET /api/my-events/:userId ──
-app.get("/api/my-events/:userId", async (req, res) => {
+// ── GET /api/my-events (PROTECTED) ──
+// No longer takes userId as a URL param — gets it from the verified token.
+// This prevents any user from fetching another user's events by guessing an ID.
+app.get("/api/my-events", verifyToken, async (req, res) => {
   try {
-    const events = await EventReg.find({ userId: req.params.userId }).sort({ registeredAt: -1 })
+    const events = await EventReg
+      .find({ userId: req.user.userId })
+      .sort({ registeredAt: -1 })
     return res.json(events)
   } catch (err) {
     return res.status(500).json({ error: "Server error." })
   }
+})
+
+// ── GET /health ──
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", db: mongoose.connection.readyState === 1 ? "connected" : "disconnected" })
 })
 
 const PORT = process.env.PORT || 5000

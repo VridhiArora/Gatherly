@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
 import { useEffect } from "react"
 import Navbar from "./components/Navbar"
+import PrivateRoute from "./components/PrivateRoute"
 import Login from "./pages/Login/Login"
 import Home from "./pages/Home/Home"
 import CN from "./pages/CN/CN"
@@ -40,21 +41,24 @@ function App() {
       <GlobalLayout />
       <div className="app-content">
         <Routes>
+          {/* Public route — login page */}
           <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/cn" element={<CN />} />
-          <Route path="/gfg" element={<GFG />} />
-          <Route path="/ieee" element={<IEEE />} />
-          <Route path="/vibin" element={<Vibin />} />
-          <Route path="/iste" element={<Iste />} />
-          <Route path="/bitsnbytes" element={<BitsNBytes />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/contact" element={<Contactus />} />
-          <Route path="/sports" element={<Sports />} />
-          <Route path="/cultural" element={<Cultural />} />
-          <Route path="/hostel" element={<Hostel />} />
-          <Route path="/technical" element={<Technical />} />
-          <Route path="/profile" element={<Profile/>}/>
+
+          {/* Protected routes — redirect to "/" if no valid token */}
+          <Route path="/home"       element={<PrivateRoute><Home /></PrivateRoute>} />
+          <Route path="/cn"         element={<PrivateRoute><CN /></PrivateRoute>} />
+          <Route path="/gfg"        element={<PrivateRoute><GFG /></PrivateRoute>} />
+          <Route path="/ieee"       element={<PrivateRoute><IEEE /></PrivateRoute>} />
+          <Route path="/vibin"      element={<PrivateRoute><Vibin /></PrivateRoute>} />
+          <Route path="/iste"       element={<PrivateRoute><Iste /></PrivateRoute>} />
+          <Route path="/bitsnbytes" element={<PrivateRoute><BitsNBytes /></PrivateRoute>} />
+          <Route path="/about"      element={<PrivateRoute><AboutUs /></PrivateRoute>} />
+          <Route path="/contact"    element={<PrivateRoute><Contactus /></PrivateRoute>} />
+          <Route path="/sports"     element={<PrivateRoute><Sports /></PrivateRoute>} />
+          <Route path="/cultural"   element={<PrivateRoute><Cultural /></PrivateRoute>} />
+          <Route path="/hostel"     element={<PrivateRoute><Hostel /></PrivateRoute>} />
+          <Route path="/technical"  element={<PrivateRoute><Technical /></PrivateRoute>} />
+          <Route path="/profile"    element={<PrivateRoute><Profile /></PrivateRoute>} />
         </Routes>
       </div>
       <RegistrationModal />

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { saveToken } from "../../utils/auth"
 import "./Login.css"
 
 export default function Login(){
@@ -19,8 +20,6 @@ async function createAccount(){
     alert("Please fill all fields")
     return
   }
-
-
 
   try {
     const res = await fetch("http://localhost:5000/api/signup", {
@@ -55,11 +54,8 @@ async function login(){
     const data = await res.json()
 
     if(res.ok){
-      localStorage.setItem("userId",   data.userId)
-      localStorage.setItem("username", data.username)
-      localStorage.setItem("rollno",   data.rollno)
-      localStorage.setItem("session",  data.session)
-
+      // Store the JWT — user info is decoded from it wherever needed
+      saveToken(data.token)
       alert("Login Successful")
       navigate("/home")
     } else {
@@ -77,7 +73,7 @@ return(
 <div className="header">
 <img src="/LOGO2.png" alt="logo"/>
 <div className="uni">
-Chitkara University Institute of Engineering & Technology
+Chitkara University Institute of Engineering &amp; Technology
 </div>
 </div>
 

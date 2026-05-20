@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./Sports.css";
+import { isLoggedIn } from "../../utils/auth";
 
 const heroSlides = [
   { src: "/basket2.png", alt: "Basketball" },
@@ -139,9 +140,8 @@ export default function Sports() {
                     <h3>{ev.title}</h3>
                     <p>{ev.desc}</p>
                     <button className="sp-reg-btn" disabled={past} onClick={() => {
-                      const userId = localStorage.getItem("userId");
-                      if (!userId) { alert("Please login first!"); return; }
-                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title } }));
+                      if (!isLoggedIn()) { alert("Please login first!"); return; }
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "General" } }));
                     }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>

@@ -1,4 +1,5 @@
 import "./ISTE.css";
+import { isLoggedIn } from "../../utils/auth";
 
 const today = new Date();
 const isPast = (dateStr) => new Date(dateStr) < today;
@@ -59,9 +60,8 @@ export default function ISTE() {
                     <h4>{ev.title}</h4>
                     <p>{ev.desc}</p>
                     <button className="register-btn" disabled={past} onClick={() => {
-                      const userId = localStorage.getItem("userId");
-                      if (!userId) { alert("Please login first!"); return; }
-                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title } }));
+                      if (!isLoggedIn()) { alert("Please login first!"); return; }
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "ISTE" } }));
                     }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>

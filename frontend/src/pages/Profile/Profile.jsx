@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { getUser, logout, authHeaders } from "../../utils/auth";
 import "./Profile.css";
 
 export default function Profile() {
@@ -7,22 +8,29 @@ export default function Profile() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const userId = localStorage.getItem("userId");
-  const username = localStorage.getItem("username");
-  const rollno = localStorage.getItem("rollno");
-  const session = localStorage.getItem("session");
+  // Decode user info from the JWT — no more individual localStorage reads
+  const user = getUser();
 
   useEffect(() => {
-    if (!userId) { navigate("/"); return; }
+    if (!user) { navigate("/"); return; }
     fetchMyEvents();
   }, []);
 
   async function fetchMyEvents() {
     try {
-      const res = await fetch(`http://localhost:5000/api/my-events/${userId}`);
+      // Authorization header carries the JWT — server identifies the user from it
+      const res = await fetch("http://localhost:5000/api/my-events", {
+        headers: authHeaders()
+      });
+
+      if (res.status === 401) {
+        // Token expired or invalid — log out and redirect
+        logout();
+        navigate("/");
+        return;
+      }
+
       const data = await res.json();
-      
-      // Sort events by registration date (newest first)
       const sorted = data.sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
       setEvents(sorted);
     } catch {
@@ -32,8 +40,8 @@ export default function Profile() {
     }
   }
 
-  function logout() {
-    localStorage.clear();
+  function handleLogout() {
+    logout();
     navigate("/");
   }
 
@@ -50,28 +58,28 @@ export default function Profile() {
   return (
     <div className="profile-page-wrapper">
       <div className="profile-container">
-          
+
           {/* ================= LEFT COLUMN: SIDEBAR ================= */}
           <div className="dash-card profile-sidebar">
             <div className="profile-avatar">
-              {(username || "U")[0].toUpperCase()}
+              {(user?.username || "U")[0].toUpperCase()}
             </div>
-            
-            <h2>{username}</h2>
-            <p className="profile-roll">{rollno}</p>
-            
+
+            <h2>{user?.username}</h2>
+            <p className="profile-roll">{user?.rollno}</p>
+
             <div className="sidebar-stats">
               <div className="stat-row">
                 <span>Session</span>
-                <b>{session || "Jan-Jun 2026"}</b>
+                <b>{user?.session || "Jan-Jun 2026"}</b>
               </div>
               <div className="stat-row highlight">
                 <span>Total Events</span>
                 <b>{events.length}</b>
               </div>
             </div>
-            
-            <button className="profile-logout-btn" onClick={logout}>
+
+            <button className="profile-logout-btn" onClick={handleLogout}>
               ⎋ Logout
             </button>
 
@@ -125,7 +133,7 @@ export default function Profile() {
                   return (
                     <div key={i} className="event-row">
                       <p className="event-name" title={ev.eventName}>{ev.eventName}</p>
-                      
+
                       <div className="event-club">
                         <span className="club-dot" style={{ background: clubColor }}></span>
                         {clubName}
@@ -136,7 +144,7 @@ export default function Profile() {
                           day: "2-digit", month: "short", year: "numeric"
                         })}
                       </span>
-                      
+
                       <div className="event-status">
                         Registered
                       </div>
