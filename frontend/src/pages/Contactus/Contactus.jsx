@@ -3,19 +3,53 @@ import "./ContactUs.css";
 import { Link } from "react-router-dom";
 
 export default function ContactUs() {
-  const [form, setForm] = useState({ name: "", email: "", roll: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    roll: "",
+    subject: "Event Registration Query",
+    message: ""
+  });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
+    setErrorMsg("");
     if (!form.name || !form.email || !form.message) {
-      alert("Please fill all required fields!");
+      setErrorMsg("Please fill in all required fields.");
       return;
     }
-    setSent(true);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      setErrorMsg("Please provide a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setSent(true);
+      } else {
+        setErrorMsg(data.error || "Failed to submit message. Please try again.");
+      }
+    } catch (err) {
+      setErrorMsg("Server error. Could not connect to the backend.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -94,7 +128,7 @@ export default function ContactUs() {
                 <div className="success-icon">✅</div>
                 <h3>Message Sent!</h3>
                 <p>Thanks for reaching out. We'll get back to you soon.</p>
-                <button onClick={() => { setSent(false); setForm({ name:"", email:"", roll:"", message:"" }); }}>
+                <button onClick={() => { setSent(false); setForm({ name: "", email: "", roll: "", subject: "Event Registration Query", message: "" }); setErrorMsg(""); }}>
                   Send Another
                 </button>
               </div>
@@ -106,6 +140,7 @@ export default function ContactUs() {
                     <input
                       type="text" name="name" value={form.name}
                       onChange={handleChange} placeholder="Enter your name"
+                      disabled={loading}
                     />
                   </div>
                   <div className="form-group">
@@ -113,6 +148,7 @@ export default function ContactUs() {
                     <input
                       type="text" name="roll" value={form.roll}
                       onChange={handleChange} placeholder="e.g. 2210990123"
+                      disabled={loading}
                     />
                   </div>
                 </div>
@@ -122,12 +158,13 @@ export default function ContactUs() {
                   <input
                     type="email" name="email" value={form.email}
                     onChange={handleChange} placeholder="your@email.com"
+                    disabled={loading}
                   />
                 </div>
 
                 <div className="form-group">
                   <label>Subject</label>
-                  <select name="subject" onChange={handleChange}>
+                  <select name="subject" value={form.subject} onChange={handleChange} disabled={loading}>
                     <option>Event Registration Query</option>
                     <option>Club Collaboration</option>
                     <option>Technical Issue</option>
@@ -142,11 +179,18 @@ export default function ContactUs() {
                     name="message" value={form.message}
                     onChange={handleChange} placeholder="Write your message here..."
                     rows={5}
+                    disabled={loading}
                   />
                 </div>
 
-                <button className="submit-btn" onClick={handleSubmit}>
-                  Send Message →
+                {errorMsg && (
+                  <div style={{ color: "#d32f2f", fontSize: "14px", marginBottom: "15px", fontWeight: "500" }}>
+                    ⚠️ {errorMsg}
+                  </div>
+                )}
+
+                <button className="submit-btn" onClick={handleSubmit} disabled={loading}>
+                  {loading ? "Sending..." : "Send Message →"}
                 </button>
               </div>
             )}

@@ -39,6 +39,17 @@ const eventRegSchema = new mongoose.Schema({
 })
 const EventReg = mongoose.model("EventReg", eventRegSchema)
 
+// ── Contact Message Schema ──
+const contactMessageSchema = new mongoose.Schema({
+  name:      { type: String, required: true },
+  roll:      { type: String },
+  email:     { type: String, required: true },
+  subject:   { type: String, default: "Event Registration Query" },
+  message:   { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+})
+const ContactMessage = mongoose.model("ContactMessage", contactMessageSchema)
+
 // ── Auth Middleware ──
 // Reads the token from the Authorization header, verifies it using JWT_SECRET,
 // and attaches the decoded user object to req.user for downstream route handlers.
@@ -165,6 +176,46 @@ app.get("/api/my-events", verifyToken, async (req, res) => {
     return res.json(events)
   } catch (err) {
     return res.status(500).json({ error: "Server error." })
+  }
+})
+
+// ── POST /api/contact ──
+// Public endpoint for submitting the contact form. Validates input properties,
+// checks email structure, persists the record, and triggers local development logging.
+app.post("/api/contact", async (req, res) => {
+  const { name, roll, email, subject, message } = req.body
+
+  // Validation: Check for presence of required parameters
+  if (!name || !email || !message)
+    return res.status(400).json({ error: "Name, email, and message are required." })
+
+  // Validation: Enforce clean email formatting
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email))
+    return res.status(400).json({ error: "Please provide a valid email address." })
+
+  try {
+    const newMessage = await ContactMessage.create({
+      name,
+      roll,
+      email,
+      subject: subject || "Event Registration Query",
+      message
+    })
+
+    // Simulated email dispatcher logging (for local development testing)
+    console.log(`\n==================================================`)
+    console.log(`✉️  [SIMULATED EMAIL DISPATCH]`)
+    console.log(`To: gatherly@chitkara.edu.in`)
+    console.log(`From: ${email} (${name})`)
+    console.log(`Subject: ${subject || "New Contact Message"}`)
+    console.log(`Message Body:\n--------------------------------------------------\n${message}\n--------------------------------------------------`)
+    console.log(`==================================================\n`)
+
+    return res.status(201).json({ message: "Message sent successfully!", data: newMessage })
+  } catch (err) {
+    console.error("Contact API Error:", err)
+    return res.status(500).json({ error: "Internal server error. Message could not be sent." })
   }
 })
 
