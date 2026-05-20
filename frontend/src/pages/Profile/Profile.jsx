@@ -7,6 +7,9 @@ export default function Profile() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmingId, setConfirmingId] = useState(null);
+  const [cancellingId, setCancellingId] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   // Decode user info from the JWT — no more individual localStorage reads
   const user = getUser();
@@ -14,7 +17,17 @@ export default function Profile() {
   useEffect(() => {
     if (!user) { navigate("/"); return; }
     fetchMyEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const showNotification = (message, type = "success") => {
+    setNotification({ message, type });
+    // Auto-dismiss after 3 seconds
+    const timer = setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+    return () => clearTimeout(timer);
+  };
 
   async function fetchMyEvents() {
     try {
@@ -40,6 +53,45 @@ export default function Profile() {
     }
   }
 
+  async function handleCancelRegistration(registrationId, eventName) {
+    setCancellingId(registrationId);
+    setConfirmingId(null);
+
+    // Save previous events for optimistic rollback
+    const originalEvents = [...events];
+
+    // Optimistically update frontend state immediately
+    setEvents(events.filter(ev => ev._id !== registrationId));
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/register-event/${registrationId}`, {
+        method: "DELETE",
+        headers: authHeaders()
+      });
+
+      if (res.status === 401) {
+        logout();
+        navigate("/");
+        return;
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to cancel registration.");
+      }
+
+      showNotification(`Successfully cancelled registration for ${eventName}!`, "success");
+    } catch (err) {
+      console.error("Cancellation Error:", err);
+      // Rollback optimistic update on error
+      setEvents(originalEvents);
+      showNotification(err.message || "Failed to cancel registration. Please try again.", "error");
+    } finally {
+      setCancellingId(null);
+    }
+  }
+
   function handleLogout() {
     logout();
     navigate("/");
@@ -57,6 +109,15 @@ export default function Profile() {
 
   return (
     <div className="profile-page-wrapper">
+      {notification && (
+        <div className={`toast-notification ${notification.type}`}>
+          <span className="toast-icon">
+            {notification.type === "success" ? "✓" : "⚠"}
+          </span>
+          <span className="toast-message">{notification.message}</span>
+          <button className="toast-close-btn" onClick={() => setNotification(null)}>×</button>
+        </div>
+      )}
       <div className="profile-container">
 
           {/* ================= LEFT COLUMN: SIDEBAR ================= */}
@@ -123,6 +184,7 @@ export default function Profile() {
                   <span>Club</span>
                   <span>Date</span>
                   <span style={{ textAlign: "center" }}>Status</span>
+                  <span style={{ textAlign: "center" }}>Action</span>
                 </div>
 
                 {/* Event Rows */}
@@ -147,6 +209,36 @@ export default function Profile() {
 
                       <div className="event-status">
                         Registered
+                      </div>
+
+                      <div className="event-action">
+                        {cancellingId === ev._id ? (
+                          <span className="cancelling-text">Cancelling...</span>
+                        ) : confirmingId === ev._id ? (
+                          <div className="confirm-actions">
+                            <button
+                              onClick={() => handleCancelRegistration(ev._id, ev.eventName)}
+                              className="confirm-btn"
+                              title="Confirm Cancellation"
+                            >
+                              Confirm
+                            </button>
+                            <button
+                              onClick={() => setConfirmingId(null)}
+                              className="keep-btn"
+                              title="Keep Registration"
+                            >
+                              Keep
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setConfirmingId(ev._id)}
+                            className="cancel-reg-btn"
+                          >
+                            Cancel
+                          </button>
+                        )}
                       </div>
                     </div>
                   );
