@@ -1,7 +1,12 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const bcrypt = require("bcrypt")
 const cors = require("cors")
 require("dotenv").config()
+
+// Number of salt rounds for bcrypt — 10 is the industry-standard sweet spot
+// (higher = slower hash = harder to brute-force, but also slower signup)
+const SALT_ROUNDS = 10
 
 const app = express()
 app.use(cors())
@@ -38,13 +43,25 @@ const EventReg = mongoose.model("EventReg", eventRegSchema)
 // ── POST /api/signup ──
 app.post("/api/signup", async (req, res) => {
   const { username, rollno, password, session } = req.body
+
   if (!username || !rollno || !password)
     return res.status(400).json({ error: "All fields are required." })
+
+  // Basic length check — prevent single-character passwords
+  if (password.length < 4)
+    return res.status(400).json({ error: "Password must be at least 4 characters." })
+
   try {
     const existing = await User.findOne({ $or: [{ username }, { rollno }] })
     if (existing)
       return res.status(409).json({ error: "Username or Roll No already exists." })
-    const user = await User.create({ username, rollno, password, session })
+
+    // Hash the password before storing — the raw password NEVER touches the DB
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
+
+    const user = await User.create({ username, rollno, password: hashedPassword, session })
+
+    // Never return the password field in the response
     return res.status(201).json({ message: "Account created!", userId: user._id })
   } catch (err) {
     console.error("Signup Error:", err)
@@ -55,10 +72,43 @@ app.post("/api/signup", async (req, res) => {
 // ── POST /api/login ──
 app.post("/api/login", async (req, res) => {
   const { username, rollno, password } = req.body
+
+  if (!username || !rollno || !password)
+    return res.status(400).json({ error: "All fields are required." })
+
   try {
-    const user = await User.findOne({ username, rollno, password })
+    // Find by username + rollno only — we verify the password separately
+    const user = await User.findOne({ username, rollno })
     if (!user)
       return res.status(401).json({ error: "Invalid credentials." })
+
+    // ── Password verification with lazy migration ──
+    // bcrypt hashes always start with "$2b$" — use this to detect plaintext accounts
+    // from before hashing was introduced, and silently upgrade them on first login.
+    let passwordMatch = false
+
+    const isAlreadyHashed = user.password.startsWith("$2b$") || user.password.startsWith("$2a$")
+
+    if (isAlreadyHashed) {
+      // Normal path — compare the input against the stored bcrypt hash
+      passwordMatch = await bcrypt.compare(password, user.password)
+    } else {
+      // Legacy path — this user's password was stored before hashing was added
+      // Check if the raw input matches the old plaintext password
+      passwordMatch = (password === user.password)
+
+      if (passwordMatch) {
+        // Silently upgrade: hash the correct password and save it now
+        const upgraded = await bcrypt.hash(password, SALT_ROUNDS)
+        await User.updateOne({ _id: user._id }, { password: upgraded })
+        console.log(`🔐 Upgraded plaintext password to bcrypt hash for user: ${user.username}`)
+      }
+    }
+
+    if (!passwordMatch)
+      return res.status(401).json({ error: "Invalid credentials." })
+
+    // Never return the password field — send only what the frontend needs
     return res.json({
       message:  "Login successful!",
       userId:   user._id,
