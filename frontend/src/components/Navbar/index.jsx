@@ -21,10 +21,10 @@ export default function Navbar() {
     <header className={`global-navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="nav-container">
         <Link to="/home" className="logo-section">
-          <img src="/LOGO2.png" alt="Chitkara Logo" className="nav-logo" />
+          <img src="/gatherly.png" alt="Gatherly Logo" className="nav-logo" />
           <div className="uni-name">
-            <span className="main-name">CHITKARA</span>
-            <span className="sub-name">UNIVERSITY</span>
+            <span className="main-name">GATHERLY</span>
+            <span className="sub-name">CAMPUS EVENTS</span>
           </div>
         </Link>
         
