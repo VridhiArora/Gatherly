@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./BitsNBytes.css";
 import { isLoggedIn } from "../../utils/auth";
 
 const today = new Date();
 const isPast = (dateStr) => new Date(dateStr) < today;
 
-const events = [
-  { img: "/bb1.png", title: "Rang-e-Henna",    desc: "A Fun Event for Girls.",  date: "2026-08-20" },
-  { img: "/bb2.png", title: "Next Gen AI Quest", desc: "An Innovation Quest.",   date: "2026-01-20" },
-  { img: "/bb3.png", title: "Hirings",           desc: "Join Our Team.",         date: "2026-08-20" },
-];
+const getImageUrl = (img) => {
+  if (!img) return "/event-placeholder.png";
+  return img;
+};
 
 const teamMembers = [
   { img: "https://randomuser.me/api/portraits/men/32.jpg",   name: "Aryan Sharma", role: "President" },
@@ -24,10 +23,14 @@ const galleryImgs = [
 ];
 
 export default function BitsNBytes() {
+  const [events, setEvents] = useState([]);
 
-
-
-  return (
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events?clubName=Bits+N+Bytes")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Failed to fetch events", err));
+  }, []);  return (
     <div className="bnb-wrap">
 
 
@@ -59,17 +62,17 @@ export default function BitsNBytes() {
               const past = isPast(ev.date);
               return (
                 <div key={i} className={`event-card${past ? " past-event" : ""}`}>
-                  <img src={ev.img} alt={ev.title} />
+                  <img src={getImageUrl(ev.img)} alt={ev.eventName} />
                   <div className="event-info">
-                    <h4>{ev.title}</h4>
-                    <p>{ev.desc}</p>
+                    <h4>{ev.eventName}</h4>
+                    <p>{ev.description}</p>
                     <button
                       className="register-btn"
                       disabled={past}
                       onClick={() => {
                         if (!past) {
                           if (!isLoggedIn()) { alert("Please login first!"); return; }
-                          window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "Bits N Bytes" } }));
+                          window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.eventName, clubName: "Bits N Bytes" } }));
                         }
                       }}
                     >

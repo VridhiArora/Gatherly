@@ -1,16 +1,14 @@
 import "./Vibin.css";
+import { useState, useEffect } from "react";
 import { isLoggedIn } from "../../utils/auth";
 
 const today = new Date();
 const isPast = (dateStr) => new Date(dateStr) < today;
 
-const events = [
-  { img: "/qwali.jpeg", title: "Mehfil-E-Qawwali", desc: "A Night full of Love and Music.", date: "2026-08-20" },
-  { img: "/v2.png",     title: "Infinia 2026",      desc: "A Starry Night.",               date: "2026-08-20" },
-  { img: "/v1.png",     title: "Love Fest",          desc: "Valentine's Special.",          date: "2026-08-20" },
-  { img: "/v3.png",     title: "WISH DJ",            desc: "A PowerPack Energetic Night.",  date: "2026-01-20" },
-  { img: "/v4.png",     title: "Dil Se Dil Tak",     desc: "An Evening full of Love & Shayari's.", date: "2026-01-20" },
-];
+const getImageUrl = (img) => {
+  if (!img) return "/event-placeholder.png";
+  return img;
+};
 
 const teamMembers = [
   { img: "https://randomuser.me/api/portraits/men/32.jpg",   name: "Aryan Sharma", role: "President" },
@@ -25,6 +23,15 @@ const galleryImgs = [
 ];
 
 export default function Vibin() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events?clubName=Vibin")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Failed to fetch events", err));
+  }, []);
+
   return (
     <div className="vibin-wrap">
 
@@ -52,13 +59,13 @@ export default function Vibin() {
               const past = isPast(ev.date);
               return (
                 <div key={i} className={`event-card${past ? " past-event" : ""}`}>
-                  <img src={ev.img} alt={ev.title} />
+                  <img src={getImageUrl(ev.img)} alt={ev.eventName} />
                   <div className="event-info">
-                    <h4>{ev.title}</h4>
-                    <p>{ev.desc}</p>
+                    <h4>{ev.eventName}</h4>
+                    <p>{ev.description}</p>
                     <button className="register-btn" disabled={past} onClick={() => {
                       if (!isLoggedIn()) { alert("Please login first!"); return; }
-                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "Vibin'z" } }));
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.eventName, clubName: "Vibin" } }));
                     }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>

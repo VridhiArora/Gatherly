@@ -1,15 +1,14 @@
 import "./ISTE.css";
+import { useState, useEffect } from "react";
 import { isLoggedIn } from "../../utils/auth";
 
 const today = new Date();
 const isPast = (dateStr) => new Date(dateStr) < today;
 
-const events = [
-  { img: "/is1.png", title: "Master Of Creators",  desc: "Competitive programming contest.",        date: "2026-08-20" },
-  { img: "/is2.png", title: "Armageddon 26.O",      desc: "National Level Tech Fest.",               date: "2026-08-20" },
-  { img: "/is3.png", title: "Mock Interview Drive", desc: "Real interview simulations.",             date: "2026-01-20" },
-  { img: "/is4.png", title: "HackTU 7.O",           desc: "A High-Tech National Level Hackathon.",  date: "2026-01-20" },
-];
+const getImageUrl = (img) => {
+  if (!img) return "/event-placeholder.png";
+  return img;
+};
 
 const teamMembers = [
   { img: "https://randomuser.me/api/portraits/men/32.jpg",   name: "Aryan Sharma", role: "President" },
@@ -24,6 +23,15 @@ const galleryImgs = [
 ];
 
 export default function ISTE() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events?clubName=Iste")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Failed to fetch events", err));
+  }, []);
+
   return (
     <div className="iste-wrap">
 
@@ -55,13 +63,13 @@ export default function ISTE() {
               const past = isPast(ev.date);
               return (
                 <div key={i} className={`event-card${past ? " past-event" : ""}`}>
-                  <img src={ev.img} alt={ev.title} />
+                  <img src={getImageUrl(ev.img)} alt={ev.eventName} />
                   <div className="event-info">
-                    <h4>{ev.title}</h4>
-                    <p>{ev.desc}</p>
+                    <h4>{ev.eventName}</h4>
+                    <p>{ev.description}</p>
                     <button className="register-btn" disabled={past} onClick={() => {
                       if (!isLoggedIn()) { alert("Please login first!"); return; }
-                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "ISTE" } }));
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.eventName, clubName: "ISTE" } }));
                     }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>

@@ -1,16 +1,14 @@
 import "./CN.css";
+import { useState, useEffect } from "react";
 import { isLoggedIn } from "../../utils/auth";
 
 const today = new Date();
-
 const isPast = (dateStr) => new Date(dateStr) < today;
 
-const events = [
-  { img: "/c1.png", title: "Code Sprint", desc: "Competitive programming contest.", date: "2026-08-20" },
-  { img: "/c2.png", title: "Mock Interview Drive", desc: "Real interview simulations.", date: "2026-08-20" },
-  { img: "/c5.png", title: "Mock Interview Drive", desc: "Real interview simulations.", date: "2024-09-10" },
-  { img: "/c3.png", title: "DSA Bootcamp", desc: "Intensive algorithm training.", date: "2024-09-10" },
-];
+const getImageUrl = (img) => {
+  if (!img) return "/event-placeholder.png";
+  return img;
+};
 
 const teamMembers = [
   { img: "https://randomuser.me/api/portraits/men/32.jpg", name: "Aryan Sharma", role: "President" },
@@ -25,6 +23,15 @@ const galleryImgs = [
 ];
 
 export default function CodingNinjas() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events?clubName=Coding+Ninjas")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Failed to fetch events", err));
+  }, []);
+
   return (
     <div className="cn-wrap">
 
@@ -60,13 +67,13 @@ export default function CodingNinjas() {
               const past = isPast(ev.date);
               return (
                 <div key={i} className={`event-card${past ? " past-event" : ""}`}>
-                  <img src={ev.img} alt={ev.title} />
+                  <img src={getImageUrl(ev.img)} alt={ev.eventName} />
                   <div className="event-info">
-                    <h4>{ev.title}</h4>
-                    <p>{ev.desc}</p>
+                    <h4>{ev.eventName}</h4>
+                    <p>{ev.description}</p>
                     <button className="register-btn" disabled={past} onClick={() => {
                       if (!isLoggedIn()) { alert("Please login first!"); return; }
-                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "Coding Ninjas" } }));
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.eventName, clubName: "Coding Ninjas" } }));
                     }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>

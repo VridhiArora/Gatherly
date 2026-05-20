@@ -3,6 +3,10 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const cors = require("cors")
+const multer = require("multer")
+const { CloudinaryStorage } = require("multer-storage-cloudinary")
+const cloudinary = require("cloudinary").v2
+// Removed fs and path since we are strictly using Cloudinary
 require("dotenv").config()
 
 const {
@@ -19,6 +23,19 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+// ── Image Upload Configuration ──
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: { folder: "gatherly_events", allowed_formats: ["jpg", "png", "jpeg", "webp"] }
+})
+const upload = multer({ storage })
+
 // ── Connect to MongoDB ──
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
@@ -33,6 +50,7 @@ const userSchema = new mongoose.Schema({
   rollno:    { type: String, required: true, unique: true },
   password:  { type: String, required: true },
   session:   { type: String, default: "JanJun2026" },
+  isAdmin:   { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 })
 const User = mongoose.model("User", userSchema)
@@ -53,6 +71,11 @@ const EventReg = mongoose.model("EventReg", eventRegSchema)
 // ── Event Schema ──
 const eventSchema = new mongoose.Schema({
   eventName:       { type: String, required: true, unique: true },
+  clubName:        { type: String },
+  category:        { type: String },
+  description:     { type: String },
+  date:            { type: String },
+  img:             { type: String },
   maxSeats:        { type: Number, required: true },
   registeredCount: { type: Number, default: 0 }
 })
@@ -60,10 +83,25 @@ const Event = mongoose.model("Event", eventSchema)
 
 // ── Startup Seeding Logic for Event Capacity ──
 const defaultEvents = [
-  { eventName: "Hackathon 2026", maxSeats: 3 },
-  { eventName: "StandUp 2026", maxSeats: 2 },
-  { eventName: "IEEE Tech Conference", maxSeats: 5 },
-  { eventName: "Qwali Night", maxSeats: 50 }
+  { clubName: "Bits N Bytes", eventName: "Rang-e-Henna", description: "A Fun Event for Girls.", date: "2026-08-20", img: "/bb1.png", maxSeats: 100 },
+  { clubName: "Bits N Bytes", eventName: "Next Gen AI Quest", description: "An Innovation Quest.", date: "2026-01-20", img: "/bb2.png", maxSeats: 50 },
+  { clubName: "Bits N Bytes", eventName: "Hirings", description: "Join Our Team.", date: "2026-08-20", img: "/bb3.png", maxSeats: 200 },
+  { clubName: "Coding Ninjas", eventName: "Code Sprint", description: "Competitive programming contest.", date: "2026-08-20", img: "/c1.png", maxSeats: 60 },
+  { clubName: "Coding Ninjas", eventName: "Mock Interview Drive", description: "Real interview simulations.", date: "2026-08-20", img: "/c2.png", maxSeats: 30 },
+  { clubName: "Coding Ninjas", eventName: "DSA Bootcamp", description: "Intensive algorithm training.", date: "2024-09-10", img: "/c3.png", maxSeats: 150 },
+  { clubName: "GeeksforGeeks", eventName: "Innovation in AR/VR Frontier", description: "Hands On Experience on New Tech Field.", date: "2026-08-20", img: "/g1.png", maxSeats: 40 },
+  { clubName: "GeeksforGeeks", eventName: "Career Canvas", description: "Intensive workshop.", date: "2026-08-20", img: "/g9.png", maxSeats: 40 },
+  { clubName: "GeeksforGeeks", eventName: "Code Drip", description: "Industry expert sessions.", date: "2026-08-20", img: "/g8.png", maxSeats: 40 },
+  { clubName: "IEEE", eventName: "Tech Talk 2026", description: "Future of AI.", date: "2026-08-20", img: "/iee1.png", maxSeats: 50 },
+  { clubName: "IEEE", eventName: "Robo Wars", description: "Robot battles.", date: "2026-09-15", img: "/iee2.png", maxSeats: 50 },
+  { clubName: "Iste", eventName: "Innovation Fest", description: "Showcase your projects.", date: "2026-10-10", img: "/is1.png", maxSeats: 100 },
+  { clubName: "Vibin", eventName: "Musical Eve", description: "A night of melodies.", date: "2026-11-05", img: "/v1.png", maxSeats: 200 },
+  { eventName: "Hackathon 2026", maxSeats: 3, img: "/acm.png" },
+  { eventName: "StandUp 2026", maxSeats: 2, img: "/harsh.png" },
+  { eventName: "IEEE Tech Conference", maxSeats: 5, img: "/ieeevent.png" },
+  { eventName: "Qwali Night", maxSeats: 50, img: "/qwali.jpeg" },
+  { eventName: "Love Fest", maxSeats: 50, img: "/love.png" },
+  { eventName: "GFG Tech Conference", maxSeats: 50, img: "/g5.png" }
 ]
 
 async function seedEvents() {
@@ -72,10 +110,18 @@ async function seedEvents() {
       const existing = await Event.findOne({ eventName: def.eventName })
       if (!existing) {
         const count = await EventReg.countDocuments({ eventName: def.eventName })
-        await Event.create({ eventName: def.eventName, maxSeats: def.maxSeats, registeredCount: count })
-        console.log(`🌱 Seeded event: ${def.eventName} with ${def.maxSeats} max seats (current registrations: ${count})`)
+        await Event.create({ 
+          eventName: def.eventName, 
+          clubName: def.clubName || "General",
+          description: def.description || "",
+          date: def.date || new Date().toISOString(),
+          img: def.img || "/event-placeholder.png",
+          maxSeats: def.maxSeats || 50, 
+          registeredCount: count 
+        })
+        console.log(`🌱 Seeded event: ${def.eventName} with ${def.maxSeats || 50} max seats`)
       } else {
-        if (existing.maxSeats !== def.maxSeats) {
+        if (existing.maxSeats !== def.maxSeats && def.maxSeats) {
           existing.maxSeats = def.maxSeats
           await existing.save()
           console.log(`🌱 Updated maxSeats for event ${def.eventName} to ${def.maxSeats}`)
@@ -99,9 +145,6 @@ const contactMessageSchema = new mongoose.Schema({
 const ContactMessage = mongoose.model("ContactMessage", contactMessageSchema)
 
 // ── Auth Middleware ──
-// Reads the token from the Authorization header, verifies it using JWT_SECRET,
-// and attaches the decoded user object to req.user for downstream route handlers.
-// Any route using this middleware is automatically protected.
 function verifyToken(req, res, next) {
   const authHeader = req.headers["authorization"]
 
@@ -112,10 +155,18 @@ function verifyToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    req.user = decoded  // { userId, username, rollno, session, iat, exp }
+    req.user = decoded  
     next()
   } catch (err) {
     return res.status(401).json({ error: "Session expired. Please log in again." })
+  }
+}
+
+function verifyAdmin(req, res, next) {
+  if (req.user && req.user.isAdmin) {
+    next()
+  } else {
+    return res.status(403).json({ error: "Admin access required." })
   }
 }
 
@@ -147,7 +198,6 @@ app.post("/api/login", loginRules, handleValidationErrors, async (req, res) => {
     if (!user)
       return res.status(401).json({ error: "Invalid credentials." })
 
-    // ── Password check with lazy migration for old plaintext accounts ──
     let passwordMatch = false
     const isAlreadyHashed = user.password.startsWith("$2b$") || user.password.startsWith("$2a$")
 
@@ -158,23 +208,18 @@ app.post("/api/login", loginRules, handleValidationErrors, async (req, res) => {
       if (passwordMatch) {
         const upgraded = await bcrypt.hash(password, SALT_ROUNDS)
         await User.updateOne({ _id: user._id }, { password: upgraded })
-        console.log(`🔐 Upgraded plaintext password for: ${user.username}`)
       }
     }
 
     if (!passwordMatch)
       return res.status(401).json({ error: "Invalid credentials." })
 
-    // ── Generate JWT ──
-    // The payload carries just enough info for the frontend.
-    // The server will verify this signature on every protected request.
     const token = jwt.sign(
-      { userId: user._id, username: user.username, rollno: user.rollno, session: user.session },
+      { userId: user._id, username: user.username, rollno: user.rollno, session: user.session, isAdmin: user.isAdmin },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     )
 
-    // Return only the token — no raw user fields exposed
     return res.json({ message: "Login successful!", token })
   } catch (err) {
     console.error("Login Error:", err)
@@ -347,6 +392,76 @@ app.post("/api/contact", contactRules, handleValidationErrors, async (req, res) 
   } catch (err) {
     console.error("Contact API Error:", err)
     return res.status(500).json({ error: "Internal server error. Message could not be sent." })
+  }
+})
+
+// ── GET /api/events ──
+app.get("/api/events", async (req, res) => {
+  try {
+    const { clubName } = req.query;
+    const query = clubName ? { clubName } : {};
+    const events = await Event.find(query).sort({ date: -1 });
+    return res.json(events);
+  } catch (err) {
+    return res.status(500).json({ error: "Server error fetching events." });
+  }
+})
+
+// ── POST /api/events (Admin Only) ──
+app.post("/api/events", verifyToken, verifyAdmin, upload.single("image"), async (req, res) => {
+  try {
+    const { eventName, clubName, category, description, date, maxSeats } = req.body;
+    let img = "/event-placeholder.png";
+    if (req.file) {
+      img = req.file.path; // Cloudinary automatically gives the URL
+    }
+
+    const existing = await Event.findOne({ eventName });
+    if (existing) return res.status(409).json({ error: "Event name already exists." });
+
+    const newEvent = await Event.create({
+      eventName, clubName, category, description, date, img, maxSeats: Number(maxSeats)
+    });
+    return res.status(201).json(newEvent);
+  } catch (err) {
+    console.error("Create Event Error:", err);
+    return res.status(500).json({ error: "Server error creating event." });
+  }
+})
+
+// ── PUT /api/events/:id (Admin Only) ──
+app.put("/api/events/:id", verifyToken, verifyAdmin, upload.single("image"), async (req, res) => {
+  try {
+    const { eventName, clubName, category, description, date, maxSeats } = req.body;
+    const updateData = { eventName, clubName, category, description, date, maxSeats: Number(maxSeats) };
+    
+    if (req.file) {
+      updateData.img = req.file.path; // Cloudinary automatically gives the URL
+    }
+
+    const updated = await Event.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    if (!updated) return res.status(404).json({ error: "Event not found." });
+
+    return res.json(updated);
+  } catch (err) {
+    console.error("Update Event Error:", err);
+    return res.status(500).json({ error: "Server error updating event." });
+  }
+})
+
+// ── DELETE /api/events/:id (Admin Only) ──
+app.delete("/api/events/:id", verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const deleted = await Event.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Event not found." });
+    
+    // Cleanup registrations
+    await EventReg.deleteMany({ eventName: deleted.eventName });
+    
+    return res.json({ message: "Event deleted successfully." });
+  } catch (err) {
+    console.error("Delete Event Error:", err);
+    return res.status(500).json({ error: "Server error deleting event." });
   }
 })
 

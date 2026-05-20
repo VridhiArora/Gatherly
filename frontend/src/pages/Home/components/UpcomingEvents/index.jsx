@@ -1,54 +1,82 @@
+import { useState, useEffect } from "react";
 import "./UpcomingEvents.css";
 
-const eventsRow1 = [
-  { img: "./harsh.png", title: "StandUp 2026", club: "Organized by: Vibin'z", time: "10 March 2026 | 2:00 PM", desc: "Standup Comedy By Harsh Gujral." },
-  { img: "./qwali.jpeg", title: "Qwali Night", club: "Organized by: Vibin'z Club", time: "20 March 2026 | 6:00 PM", desc: "Music, dance and unforgettable performances under the stars." },
-  { img: "./ieeevent.png", title: "IEEE Tech Conference", club: "Organized by: IEEE", time: "25 March 2026 | 11:00 AM", desc: "Industry experts discussing future trends in AI & Robotics." },
-];
-
-const eventsRow2 = [
-  { img: "./acm.png", title: "Hackathon 2026", club: "Organized by: ACM", time: "10 March 2026 | 9:00 AM", desc: "A 24-hour coding competition where innovation meets creativity." },
-  { img: "./love.png", title: "Love Fest", club: "Organized by: Vibin'z Club", time: "20 February 2026 | 6:00 PM", desc: "Music, dance and unforgettable performances under the stars." },
-  { img: "./g5.png", title: "GFG Tech Conference", club: "Organized by: GeeksForGeeks Club", time: "25 February 2026 | 11:00 AM", desc: "Industry experts discussing future trends in Telecom Industry." },
-];
+const getImageUrl = (img) => {
+  if (!img) return "/event-placeholder.png";
+  return img;
+};
 
 export default function UpcomingEvents({ onRegisterClick }) {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events")
+      .then(res => res.json())
+      .then(data => {
+        // Filter out past events
+        const today = new Date();
+        // Clear time to just compare dates properly
+        today.setHours(0, 0, 0, 0);
+        
+        const upcoming = data.filter(ev => {
+          if (!ev.date) return false;
+          const evDate = new Date(ev.date);
+          evDate.setHours(0, 0, 0, 0);
+          return evDate >= today;
+        });
+        
+        // Sort by closest date first
+        upcoming.sort((a, b) => new Date(a.date) - new Date(b.date));
+        setEvents(upcoming);
+      })
+      .catch(err => console.error("Error fetching upcoming events", err));
+  }, []);
+
+  // Split events into chunks of 3 for rows
+  const row1 = events.slice(0, 3);
+  const row2 = events.slice(3, 6);
+
   return (
     <section className="section" id="events" style={{ background: "transparent" }}>
       <h2 className="section-title-dark">Upcoming Events</h2>
       <div className="events">
-        {eventsRow1.map((ev, i) => (
+        {row1.map((ev, i) => (
           <div key={i} className="event">
-            <div className="event-img"><img src={ev.img} alt={ev.title} /></div>
+            <div className="event-img"><img src={getImageUrl(ev.img)} alt={ev.eventName} /></div>
             <div className="event-content">
-              <h4>{ev.title}</h4>
-              <p className="club-name">{ev.club}</p>
-              <p className="event-time">{ev.time}</p>
-              <p className="event-desc">{ev.desc}</p>
+              <h4>{ev.eventName}</h4>
+              <p className="club-name">Organized by: {ev.clubName || "General"}</p>
+              <p className="event-time">{ev.date ? new Date(ev.date).toLocaleDateString() : ""}</p>
+              <p className="event-desc">{ev.description}</p>
               <div className="event-buttons">
-                <button onClick={() => onRegisterClick(ev.title)}>Register</button>
+                <button onClick={() => onRegisterClick(ev.eventName)}>Register</button>
               </div>
             </div>
           </div>
         ))}
       </div>
-      <div style={{ height: "40px" }}></div>
-      <div className="events">
-        {eventsRow2.map((ev, i) => (
-          <div key={i} className="event">
-            <div className="event-img"><img src={ev.img} alt={ev.title} /></div>
-            <div className="event-content">
-              <h4>{ev.title}</h4>
-              <p className="club-name">{ev.club}</p>
-              <p className="event-time">{ev.time}</p>
-              <p className="event-desc">{ev.desc}</p>
-              <div className="event-buttons">
-                <button onClick={() => onRegisterClick(ev.title)}>Register</button>
+      
+      {row2.length > 0 && (
+        <>
+          <div style={{ height: "40px" }}></div>
+          <div className="events">
+            {row2.map((ev, i) => (
+              <div key={i} className="event">
+                <div className="event-img"><img src={getImageUrl(ev.img)} alt={ev.eventName} /></div>
+                <div className="event-content">
+                  <h4>{ev.eventName}</h4>
+                  <p className="club-name">Organized by: {ev.clubName || "General"}</p>
+                  <p className="event-time">{ev.date ? new Date(ev.date).toLocaleDateString() : ""}</p>
+                  <p className="event-desc">{ev.description}</p>
+                  <div className="event-buttons">
+                    <button onClick={() => onRegisterClick(ev.eventName)}>Register</button>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </section>
   );
 }

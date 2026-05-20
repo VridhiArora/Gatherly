@@ -19,6 +19,7 @@ import Technical from "./pages/Technical/Technical"
 import Profile from "./pages/Profile/Profile"
 import Footer from "./components/Footer"
 import RegistrationModal from "./components/RegistrationModal"
+import AdminDashboard from "./pages/Admin/AdminDashboard"
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -59,6 +60,7 @@ function App() {
           <Route path="/hostel"     element={<PrivateRoute><Hostel /></PrivateRoute>} />
           <Route path="/technical"  element={<PrivateRoute><Technical /></PrivateRoute>} />
           <Route path="/profile"    element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/admin"      element={<PrivateRoute adminOnly={true}><AdminDashboard /></PrivateRoute>} />
         </Routes>
       </div>
       <RegistrationModal />

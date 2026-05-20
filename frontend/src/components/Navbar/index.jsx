@@ -31,6 +31,11 @@ export default function Navbar() {
           <Link to="/home" className={location.pathname === '/home' ? 'active' : ''}>Home</Link>
           <Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</Link>
           <Link to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>Contact</Link>
+          {user?.isAdmin && (
+            <Link to="/admin" className={location.pathname === '/admin' ? 'active admin-link' : 'admin-link'}>
+              Admin Panel
+            </Link>
+          )}
         </nav>
 
         <div className="nav-actions">

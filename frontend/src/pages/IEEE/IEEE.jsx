@@ -1,16 +1,14 @@
 import "./IEEE.css";
+import { useState, useEffect } from "react";
 import { isLoggedIn } from "../../utils/auth";
 
 const today = new Date();
 const isPast = (dateStr) => new Date(dateStr) < today;
 
-const events = [
-  { img: "/ie1.png", title: "IEEE Tech Conference", desc: "Industry experts discussing AI & CyberSecurity.", date: "2026-01-20" },
-  { img: "/ie2.png", title: "TRIGGERED", desc: "A Fun Tech Event.", date: "2026-01-20" },
-  { img: "/ie3.png", title: "Hack With Her 4.O", desc: "A 24Hrs Hackathon for Girls.", date: "2026-08-20" },
-  { img: "/ie4.png", title: "Somnium", desc: "Future of Artificial Intelligence.", date: "2026-08-20" },
-  { img: "/ie5.png", title: "AI Summit", desc: "Future of Artificial Intelligence.", date: "2026-08-20" },
-];
+const getImageUrl = (img) => {
+  if (!img) return "/event-placeholder.png";
+  return img;
+};
 
 const teamMembers = [
   { img: "https://randomuser.me/api/portraits/men/22.jpg", name: "Rohan Mehta", role: "Chairperson" },
@@ -25,6 +23,15 @@ const galleryImgs = [
 ];
 
 export default function IEEE() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events?clubName=IEEE")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Failed to fetch events", err));
+  }, []);
+
   return (
     <div className="ieee-wrap">
 
@@ -58,13 +65,13 @@ export default function IEEE() {
               const past = isPast(ev.date);
               return (
                 <div key={i} className={`event-card${past ? " past-event" : ""}`}>
-                  <img src={ev.img} alt={ev.title} />
+                  <img src={getImageUrl(ev.img)} alt={ev.eventName} />
                   <div className="event-info">
-                    <h4>{ev.title}</h4>
-                    <p>{ev.desc}</p>
+                    <h4>{ev.eventName}</h4>
+                    <p>{ev.description}</p>
                     <button className="register-btn" disabled={past} onClick={() => {
                       if (!isLoggedIn()) { alert("Please login first!"); return; }
-                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "IEEE" } }));
+                      window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.eventName, clubName: "IEEE" } }));
                     }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>

@@ -1,17 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./GFG.css";
 import { isLoggedIn } from "../../utils/auth";
 
 const today = new Date();
 const isPast = (dateStr) => new Date(dateStr) < today;
 
-const events = [
-  { img: "/g1.png", title: "Innovation in AR/VR Frontier", desc: "Hands On Experience on New Tech Field.", date: "2026-08-20" },
-  { img: "/g9.png", title: "Career Canvas", desc: "Intensive workshop.", date: "2026-08-20" },
-  { img: "/g8.png", title: "Code Drip", desc: "Industry expert sessions.", date: "2026-08-20" },
-  { img: "/g4.png", title: "Meet Your Alumni", desc: "Industry Expert Talk.", date: "2026-01-20" },
-  { img: "/g7.png", title: "Web Dev Workshop", desc: "Hands-on development training.", date: "2026-01-20" },
-];
+const getImageUrl = (img) => {
+  if (!img) return "/event-placeholder.png";
+  return img;
+};
 
 const teamMembers = [
   { img: "https://randomuser.me/api/portraits/men/32.jpg", name: "Aryan Sharma", role: "President" },
@@ -27,6 +24,14 @@ const galleryImgs = [
 
 export default function GFG() {
   const galleryRef = useRef(null);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events?clubName=GeeksforGeeks")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Failed to fetch events", err));
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,13 +73,13 @@ export default function GFG() {
               const past = isPast(ev.date);
               return (
                 <div key={i} className={`event-card${past ? " past-event" : ""}`}>
-                  <img src={ev.img} alt={ev.title} />
+                  <img src={getImageUrl(ev.img)} alt={ev.eventName} />
                   <div className="event-info">
-                    <h4>{ev.title}</h4>
-                    <p>{ev.desc}</p>
+                    <h4>{ev.eventName}</h4>
+                    <p>{ev.description}</p>
                     <button className="register-btn" disabled={past} onClick={() => {
                        if (!isLoggedIn()) { alert("Please login first!"); return; }
-                       window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.title, clubName: "GeeksforGeeks" } }));
+                       window.dispatchEvent(new CustomEvent("open-registration", { detail: { eventTitle: ev.eventName, clubName: "GeeksforGeeks" } }));
                      }}>
                       {past ? "Event Ended" : "Register Now"}
                     </button>
