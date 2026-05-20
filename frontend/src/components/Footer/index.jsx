@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="footer-top">
           <div className="footer-brand">
             <div className="footer-logo">
-              <div className="big-g-logo">G</div>
+              <img src="/gatherly.png" alt="Gatherly Logo" style={{ width: "42px", height: "42px", objectFit: "contain", borderRadius: "8px" }} />
               <div className="brand-text">
                 <span className="main-name">GATHERLY</span>
               </div>
