@@ -20,6 +20,7 @@ import Profile from "./pages/Profile/Profile"
 import Footer from "./components/Footer"
 import RegistrationModal from "./components/RegistrationModal"
 import AdminDashboard from "./pages/Admin/AdminDashboard"
+import GlobalImageModal from "./components/GlobalImageModal"
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -64,6 +65,7 @@ function App() {
         </Routes>
       </div>
       <RegistrationModal />
+      <GlobalImageModal />
       <Footer />
     </BrowserRouter>
   )

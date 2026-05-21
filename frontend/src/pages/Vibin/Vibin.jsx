@@ -26,7 +26,7 @@ export default function Vibin() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/events?clubName=Vibin")
+    fetch("/api/events?clubName=Vibin")
       .then((res) => res.json())
       .then((data) => setEvents(data))
       .catch((err) => console.error("Failed to fetch events", err));

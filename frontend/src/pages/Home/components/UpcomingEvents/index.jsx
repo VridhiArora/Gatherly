@@ -10,7 +10,7 @@ export default function UpcomingEvents({ onRegisterClick }) {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/events")
+    fetch("/api/events")
       .then(res => res.json())
       .then(data => {
         // Filter out past events
@@ -42,7 +42,9 @@ export default function UpcomingEvents({ onRegisterClick }) {
       <div className="events">
         {row1.map((ev, i) => (
           <div key={i} className="event">
-            <div className="event-img"><img src={getImageUrl(ev.img)} alt={ev.eventName} /></div>
+            <div className="event-img">
+              <img src={getImageUrl(ev.img)} alt={ev.eventName} />
+            </div>
             <div className="event-content">
               <h4>{ev.eventName}</h4>
               <p className="club-name">Organized by: {ev.clubName || "General"}</p>
@@ -62,7 +64,9 @@ export default function UpcomingEvents({ onRegisterClick }) {
           <div className="events">
             {row2.map((ev, i) => (
               <div key={i} className="event">
-                <div className="event-img"><img src={getImageUrl(ev.img)} alt={ev.eventName} /></div>
+                <div className="event-img">
+                  <img src={getImageUrl(ev.img)} alt={ev.eventName} />
+                </div>
                 <div className="event-content">
                   <h4>{ev.eventName}</h4>
                   <p className="club-name">Organized by: {ev.clubName || "General"}</p>
@@ -77,6 +81,7 @@ export default function UpcomingEvents({ onRegisterClick }) {
           </div>
         </>
       )}
+
     </section>
   );
 }

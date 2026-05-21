@@ -26,7 +26,7 @@ export default function CodingNinjas() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/events?clubName=Coding+Ninjas")
+    fetch("/api/events?clubName=Coding+Ninjas")
       .then((res) => res.json())
       .then((data) => setEvents(data))
       .catch((err) => console.error("Failed to fetch events", err));

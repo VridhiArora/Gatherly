@@ -32,7 +32,7 @@ export default function Profile() {
   async function fetchMyEvents() {
     try {
       // Authorization header carries the JWT — server identifies the user from it
-      const res = await fetch("http://localhost:5000/api/my-events", {
+      const res = await fetch("/api/my-events", {
         headers: authHeaders()
       });
 
@@ -64,7 +64,7 @@ export default function Profile() {
     setEvents(events.filter(ev => ev._id !== registrationId));
 
     try {
-      const res = await fetch(`http://localhost:5000/api/register-event/${registrationId}`, {
+      const res = await fetch(`/api/register-event/${registrationId}`, {
         method: "DELETE",
         headers: authHeaders()
       });

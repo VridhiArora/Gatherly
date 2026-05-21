@@ -26,7 +26,7 @@ export default function ISTE() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/events?clubName=Iste")
+    fetch("/api/events?clubName=Iste")
       .then((res) => res.json())
       .then((data) => setEvents(data))
       .catch((err) => console.error("Failed to fetch events", err));

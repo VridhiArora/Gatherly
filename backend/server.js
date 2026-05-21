@@ -9,6 +9,11 @@ const cloudinary = require("cloudinary").v2
 // Removed fs and path since we are strictly using Cloudinary
 require("dotenv").config()
 
+if (!process.env.MONGO_URI || !process.env.JWT_SECRET || !process.env.CLOUDINARY_API_KEY) {
+  console.error("❌ CRITICAL: Missing required environment variables. Exiting.");
+  process.exit(1);
+}
+
 const {
   handleValidationErrors,
   signupRules,
@@ -20,7 +25,12 @@ const {
 const SALT_ROUNDS = 10
 
 const app = express()
-app.use(cors())
+
+const corsOptions = {
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  optionsSuccessStatus: 200
+}
+app.use(cors(corsOptions))
 app.use(express.json())
 
 // ── Image Upload Configuration ──
@@ -74,7 +84,7 @@ const eventSchema = new mongoose.Schema({
   clubName:        { type: String },
   category:        { type: String },
   description:     { type: String },
-  date:            { type: String },
+  date:            { type: Date },
   img:             { type: String },
   maxSeats:        { type: Number, required: true },
   registeredCount: { type: Number, default: 0 }
@@ -198,18 +208,8 @@ app.post("/api/login", loginRules, handleValidationErrors, async (req, res) => {
     if (!user)
       return res.status(401).json({ error: "Invalid credentials." })
 
-    let passwordMatch = false
-    const isAlreadyHashed = user.password.startsWith("$2b$") || user.password.startsWith("$2a$")
-
-    if (isAlreadyHashed) {
-      passwordMatch = await bcrypt.compare(password, user.password)
-    } else {
-      passwordMatch = (password === user.password)
-      if (passwordMatch) {
-        const upgraded = await bcrypt.hash(password, SALT_ROUNDS)
-        await User.updateOne({ _id: user._id }, { password: upgraded })
-      }
-    }
+    // Enforce strict bcrypt comparison
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch)
       return res.status(401).json({ error: "Invalid credentials." })

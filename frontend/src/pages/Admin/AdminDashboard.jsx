@@ -22,7 +22,7 @@ export default function AdminDashboard() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/api/events");
+      const res = await fetch("/api/events");
       const data = await res.json();
       setEvents(data);
     } catch (err) {
@@ -87,8 +87,8 @@ export default function AdminDashboard() {
 
     try {
       const url = editingId
-        ? `http://localhost:5000/api/events/${editingId}`
-        : "http://localhost:5000/api/events";
+        ? `/api/events/${editingId}`
+        : "/api/events";
       const method = editingId ? "PUT" : "POST";
 
       // Do NOT set Content-Type header when sending FormData! Browser sets it with boundary.
@@ -119,7 +119,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this event? This will also delete all registrations for it!")) return;
     
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${id}`, {
+      const res = await fetch(`/api/events/${id}`, {
         method: "DELETE",
         headers: authHeaders()
       });

@@ -33,8 +33,8 @@ const signupRules = [
   body("session")
     .optional({ checkFalsy: true })
     .trim()
-    .isIn(["JanJun2026", "JulDec2026"])
-    .withMessage("Session must be either JanJun2026 or JulDec2026.")
+    .matches(/^(JanJun|JulDec)20\d{2}$/)
+    .withMessage("Session must be in the format JanJunYYYY or JulDecYYYY.")
 ];
 
 const loginRules = [

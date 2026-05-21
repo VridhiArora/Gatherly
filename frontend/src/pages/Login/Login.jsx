@@ -22,7 +22,7 @@ async function createAccount(){
   }
 
   try {
-    const res = await fetch("http://localhost:5000/api/signup", {
+    const res = await fetch("/api/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: user, password: pass, rollno: roll })
@@ -46,7 +46,7 @@ async function login(){
   let roll = document.getElementById("loginRoll").value
 
   try {
-    const res = await fetch("http://localhost:5000/api/login", {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: user, password: pass, rollno: roll })

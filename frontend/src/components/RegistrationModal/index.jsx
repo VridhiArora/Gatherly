@@ -17,7 +17,7 @@ export default function RegistrationModal() {
     setStatusError("");
     setCapacity(null);
     try {
-      const res = await fetch(`http://localhost:5000/api/events/status?eventName=${encodeURIComponent(title)}`);
+      const res = await fetch(`/api/events/status?eventName=${encodeURIComponent(title)}`);
       if (res.ok) {
         const data = await res.json();
         setCapacity(data);
@@ -55,7 +55,7 @@ export default function RegistrationModal() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:5000/api/register-event", {
+      const res = await fetch("/api/register-event", {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify({
